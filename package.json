@@ -1,7 +1,0 @@
-{
-  "dependencies": {
-    "@nestjs/config": "^3.2.3",
-    "mysql2": "^3.11.3",
-    "typeorm": "^0.3.20"
-  }
-}
