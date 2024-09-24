@@ -17,7 +17,6 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
       synchronize: process.env.DB_SYNCHRONIZE === 'true',
       logging: process.env.DB_LOGGING === 'true',
       logger: new TypeORMLogger('all'),
-      insecureAuth: true,
     };
   }
 }
