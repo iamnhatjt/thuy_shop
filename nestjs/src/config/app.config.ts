@@ -7,4 +7,5 @@ export const AppConfig = registerAs(appToken, () => ({
   port: process.env['APP_PORT'],
   path: 'api',
   title: process.env['APP_NAME'],
+  saltRounds: parseInt(process.env['SALT_ROUNDS']) || 10,
 }));
