@@ -11,7 +11,7 @@ async function bootstrap() {
   app.useGlobalInterceptors(new LoggingInterceptor());
   app.useGlobalPipes(new ValidationPipe());
   setupSwagger(app, configService);
-  await app.listen(3000);
+  await app.listen(3001);
 }
 
 bootstrap();
