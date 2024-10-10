@@ -35,7 +35,8 @@ export class FtpsService implements OnModuleInit, OnModuleDestroy {
     const a = await this._ftpsClient.access({
       ...this.configService.get(ftpsToken),
       secureOptions: {
-        ca: [fs.readFileSync('pure-ftpd.pem')],
+        ca: [fs.readFileSync('pure-ftpd.crt')],
+        // rejectUnauthorized: true,
       },
     });
   }
