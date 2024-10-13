@@ -6,10 +6,30 @@ import { UserModule } from '../user/user.module';
 import { APP_GUARD } from '@nestjs/core';
 import { ResourceGuard } from './guards/resource.guard';
 import { TokenServices } from './services/token.services';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { JwtModule } from '@nestjs/jwt';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { ISecurityConfig, securityToken } from '../../config/app.config';
 
 @Module({
-  imports: [UserModule, ConfigModule],
+  imports: [
+    UserModule,
+    ConfigModule,
+    JwtModule.registerAsync({
+      imports: [ConfigModule],
+      useFactory: (configService: ConfigService) => {
+        const { jwtSecret, jwtExprire } =
+          configService.get<ISecurityConfig>(securityToken);
+        return {
+          secret: jwtSecret,
+          signOptions: {
+            expiresIn: `${jwtExprire}s`,
+          },
+        };
+      },
+      inject: [ConfigService],
+    }),
+  ],
   controllers: [AuthController],
   providers: [
     AuthService,
@@ -20,5 +40,6 @@ import { ConfigModule } from '@nestjs/config';
       useClass: ResourceGuard,
     },
   ],
+  exports: [JwtModule, TypeOrmModule],
 })
 export class AuthModule {}
