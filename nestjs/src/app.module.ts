@@ -12,11 +12,11 @@ import { UserModule } from './modules/user/user.module';
       isGlobal: true,
       expandVariables: true,
       envFilePath: ['.env'],
+      load: [AppConfig, SecurityConfig],
     }),
     TypeOrmModule.forRootAsync({
       useClass: TypeOrmConfigService,
     }),
-    ConfigModule.forRoot({ load: [AppConfig, SecurityConfig] }),
     AuthModule,
     UserModule,
   ],
