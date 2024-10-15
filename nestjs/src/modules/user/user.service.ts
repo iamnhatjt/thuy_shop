@@ -17,12 +17,14 @@ export class UserService {
     private configService: ConfigService,
   ) {}
 
-  createAccount() {
-    console.log('createAccount');
-  }
-
-  findAccount(dto: AuthDto) {
-    console.log('find Account');
+  async findAccount(dto: AuthDto) {
+    const user = await this.userRepository.findOne({
+      where: { email: dto.email },
+    });
+    if (!user) throw Error('User dont exit');
+    const isSamePass = await bcrypt.compare(dto.password, user.password);
+    if (!isSamePass) throw Error('The info dont match');
+    return user;
   }
 
   async register({ email, password }) {

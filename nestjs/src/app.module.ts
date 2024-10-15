@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TypeOrmConfigService } from './config/typeorm/database.config';
-import { AppConfig } from './config/app.config';
+import { AppConfig, SecurityConfig } from './config/app.config';
 import { AuthModule } from './modules/auth/auth.module';
 import { UserModule } from './modules/user/user.module';
 
@@ -16,7 +16,7 @@ import { UserModule } from './modules/user/user.module';
     TypeOrmModule.forRootAsync({
       useClass: TypeOrmConfigService,
     }),
-    ConfigModule.forRoot({ load: [AppConfig] }),
+    ConfigModule.forRoot({ load: [AppConfig, SecurityConfig] }),
     AuthModule,
     UserModule,
   ],
