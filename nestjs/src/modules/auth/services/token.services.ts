@@ -1,9 +1,9 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { AccessTokenEntity } from '../entities/access-token.entity';
 import dayjs from 'dayjs';
-import { generateUUID } from '../../../utils/tool.util';
+import { generateUUID } from '~/utils';
 import { JwtService } from '@nestjs/jwt';
-import { ISecurityConfig, securityToken } from '../../../config/app.config';
+import { ISecurityConfig, securityToken } from '~/config/app.config';
 import { RefreshTokenEntity } from '../entities/refresh-token.entity';
 import { UserEntity } from '../../user/entities/user.entity';
 
@@ -33,7 +33,6 @@ export class TokenServices {
 
     const accessTokenEntity = new AccessTokenEntity();
     accessTokenEntity.value = accessTokenSign;
-    accessTokenEntity.refreshToken = this.ge;
     accessTokenEntity.user = { id: userId } as UserEntity;
     accessTokenEntity.expired_at = dayjs()
       .add(this.securityConfig.jwtExprire, 'second')

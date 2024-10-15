@@ -24,6 +24,7 @@ export class UserService {
     if (!user) throw Error('User dont exit');
     const isSamePass = await bcrypt.compare(dto.password, user.password);
     if (!isSamePass) throw Error('The info dont match');
+    return user;
   }
 
   async register({ email, password }) {

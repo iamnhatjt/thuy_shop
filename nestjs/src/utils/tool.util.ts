@@ -1,5 +1,5 @@
-import { nanoid } from 'nanoid';
+import * as nanoid from 'nanoid';
 
 export function generateUUID(size: number = 21) {
-  return nanoid(size);
+  return nanoid.nanoid(size);
 }
