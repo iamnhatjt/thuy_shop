@@ -3,7 +3,11 @@ import { AccessTokenEntity } from '../entities/access-token.entity';
 import dayjs from 'dayjs';
 import { generateUUID } from '~/utils';
 import { JwtService } from '@nestjs/jwt';
-import { ISecurityConfig, securityToken } from '~/config/app.config';
+import {
+  ISecurityConfig,
+  SecurityConfig,
+  securityToken,
+} from '~/config/app.config';
 import { RefreshTokenEntity } from '../entities/refresh-token.entity';
 import { UserEntity } from '../../user/entities/user.entity';
 
@@ -11,7 +15,7 @@ import { UserEntity } from '../../user/entities/user.entity';
 export class TokenServices {
   constructor(
     private readonly jwtService: JwtService,
-    @Inject(securityToken)
+    @Inject(SecurityConfig.KEY)
     private readonly securityConfig: ISecurityConfig,
   ) {}
 
