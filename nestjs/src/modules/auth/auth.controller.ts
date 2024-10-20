@@ -4,6 +4,8 @@ import { AuthService } from './auth.service';
 import { AuthDto } from './dto/auth.dto';
 import { Public } from './decorators/public.decorator';
 import { UserService } from '../user/user.service';
+import { refreshToken } from './dto/refresh-token.dto';
+import { ApiResult } from '../../common/decorator/api-result.decorator';
 
 @Controller('auth')
 @ApiTags('auth')
@@ -13,11 +15,12 @@ export class AuthController {
     private userService: UserService,
   ) {}
 
+  @ApiResult(refreshToken)
   @Post('/login')
   @Public()
+  @ApiBody({ type: AuthDto })
   async login(data: AuthDto) {
     await this.authService.login(data);
-    return '123';
   }
 
   @Post('/register')

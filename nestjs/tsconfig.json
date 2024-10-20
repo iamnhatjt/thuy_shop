@@ -20,12 +20,7 @@
     "noFallthroughCasesInSwitch": false,
     "lib": [
       "ESNext"
-    ],
-    "paths": {
-      "~/*": [
-        "src/*"
-      ]
-    }
+    ]
   },
   "exclude": [
     "node_modules",

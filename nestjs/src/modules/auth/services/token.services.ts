@@ -1,15 +1,12 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { AccessTokenEntity } from '../entities/access-token.entity';
 import dayjs from 'dayjs';
-import { generateUUID } from '~/utils';
 import { JwtService } from '@nestjs/jwt';
-import {
-  ISecurityConfig,
-  SecurityConfig,
-  securityToken,
-} from '~/config/app.config';
+
 import { RefreshTokenEntity } from '../entities/refresh-token.entity';
 import { UserEntity } from '../../user/entities/user.entity';
+import { ISecurityConfig, SecurityConfig } from '../../../config/app.config';
+import { generateUUID } from '../../../utils';
 
 @Injectable()
 export class TokenServices {
@@ -69,14 +66,14 @@ export class TokenServices {
       },
     );
 
-    const refreshTokenEnitiy = new RefreshTokenEntity();
-    refreshTokenEnitiy.value = refreshTokenSign;
-    refreshTokenEnitiy.accessToken = accessToken;
-    refreshTokenEnitiy.expired_at = now
+    const refreshTokenEntity = new RefreshTokenEntity();
+    refreshTokenEntity.value = refreshTokenSign;
+    refreshTokenEntity.accessToken = accessToken;
+    refreshTokenEntity.expired_at = now
       .add(this.securityConfig.jwtExprire, 'second')
       .toDate();
 
-    await refreshTokenEnitiy.save();
+    await refreshTokenEntity.save();
     return refreshTokenSign;
   }
 }

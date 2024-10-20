@@ -10,8 +10,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ISecurityConfig, securityToken } from '../../config/app.config';
-import { RefreshTokenEntity } from '~/modules/auth/entities/refresh-token.entity';
-import { AccessTokenEntity } from '~/modules/auth/entities/access-token.entity';
+import { RefreshTokenEntity } from './entities/refresh-token.entity';
+import { AccessTokenEntity } from './entities/access-token.entity';
 
 @Module({
   imports: [
