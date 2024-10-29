@@ -31,4 +31,19 @@ export const ErrorCodes = {
     status: 500,
     msg: 'Internal server error',
   },
+  USER_EXISTS: {
+    code: 'USER_EXISTS',
+    status: 500,
+    msg: 'User already exists',
+  },
+  USER_NOT_FOUND: {
+    code: 'USER_NOT_FOUND',
+    status: 500,
+    msg: 'User not found',
+  },
+  INFO_NOT_MATCH: {
+    code: 'INFO_NOT_MATCH',
+    status: 500,
+    msg: 'User does not match',
+  },
 };
