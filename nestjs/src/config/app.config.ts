@@ -17,3 +17,14 @@ export const SecurityConfig = registerAs(securityToken, () => ({
 }));
 
 export type ISecurityConfig = ConfigType<typeof SecurityConfig>;
+
+export const minIoToken = 'MiniIoToken';
+export const MinIoConfig = registerAs(minIoToken, () => ({
+  endPoint: process.env['MINIO_END_POINT'],
+  port: +process.env['MINIO_PORT'],
+  useSSL: process.env['MINIO_SSL'] === 'true',
+  accessKey: process.env['MINIO_ACCESS_KEY'],
+  secretKey: process.env['MINIO_ACCESS_PASSWORD'],
+  bucketName: process.env['MINIO_BUCKET_NAME'],
+}));
+export type IMinIoConfig = ConfigType<typeof MinIoConfig>;

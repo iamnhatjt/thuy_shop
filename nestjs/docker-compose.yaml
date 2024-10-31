@@ -16,3 +16,14 @@ services:
     ports:
       - '${MYSQL_PORT}:3306'
 
+  minIo-storage:
+    image: quay.io/minio/minio
+    command: server /data --console-address ":9001"
+    environment:
+      - MINIO_ROOT_USER=${MINIO_ACCESS_KEY}
+      - MINIO_ROOT_PASSWORD=${MINIO_ACCESS_PASSWORD}
+    ports:
+      - '${MINIO_PORT}:${MINIO_PORT}'
+      - '${MINIO_PORT_LOG}:${MINIO_PORT_LOG}'
+    volumes:
+      - ./minio_data:/data
