@@ -4,29 +4,32 @@ import { AuthService } from './auth.service';
 import { AuthDto } from './dto/auth.dto';
 import { Public } from './decorators/public.decorator';
 import { UserService } from '../user/user.service';
-import { refreshToken } from './dto/refresh-token.dto';
+import { RefreshTokenDto } from './dto/refresh-token.dto';
 import { ApiResult } from '../../common/decorator/api-result.decorator';
+import { BaseController } from '../../common/bases/controller.base';
 
 @Controller('auth')
 @ApiTags('auth')
-export class AuthController {
+export class AuthController extends BaseController {
   constructor(
     private authService: AuthService,
     private userService: UserService,
-  ) {}
+  ) {
+    super();
+  }
 
-  @ApiResult(refreshToken)
+  @ApiResult(RefreshTokenDto)
   @Post('/login')
   @Public()
-  @ApiBody({ type: AuthDto })
-  async login(data: AuthDto) {
-    await this.authService.login(data);
+  async login(@Body() data: AuthDto) {
+    const res: RefreshTokenDto = await this.authService.login(data);
+    return this.successResponse(res);
   }
 
   @Post('/register')
   @Public()
-  @ApiBody({ type: AuthDto })
   async register(@Body() data: AuthDto): Promise<void> {
     await this.userService.register(data);
+    this.successResponse({});
   }
 }

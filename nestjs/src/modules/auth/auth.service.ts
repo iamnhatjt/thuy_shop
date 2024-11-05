@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { UserService } from '../user/user.service';
 import { AuthDto } from './dto/auth.dto';
 import { TokenServices } from './services/token.services';
+import { RefreshTokenDto } from './dto/refresh-token.dto';
 
 @Injectable()
 export class AuthService {
@@ -10,7 +11,7 @@ export class AuthService {
     private tokenService: TokenServices,
   ) {}
 
-  async login(dto: AuthDto) {
+  async login(dto: AuthDto): Promise<RefreshTokenDto> {
     const user = await this.userService.findAccount(dto);
     const tokens = await this.tokenService.generateAccessToken(
       user.id,

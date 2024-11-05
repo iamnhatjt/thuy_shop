@@ -8,6 +8,8 @@ import * as bcrypt from 'bcrypt';
 import { ConfigService } from '@nestjs/config';
 import { appToken } from '../../config/app.config';
 import { UserStatus } from './user.contants';
+import { AppException } from '../../common/exceptions/app.exception';
+import { ErrorCodes } from '../../common/errors/error-code.constant';
 
 @Injectable()
 export class UserService {
@@ -21,9 +23,9 @@ export class UserService {
     const user = await this.userRepository.findOne({
       where: { email: dto.email },
     });
-    if (!user) throw Error('User dont exit');
+    if (!user) throw new AppException(ErrorCodes.USER_NOT_FOUND);
     const isSamePass = await bcrypt.compare(dto.password, user.password);
-    if (!isSamePass) throw Error('The info dont match');
+    if (!isSamePass) throw new AppException(ErrorCodes.INFO_NOT_MATCH);
     return user;
   }
 
@@ -31,7 +33,7 @@ export class UserService {
     const exits = await this.userRepository.findOneBy({
       email,
     });
-    if (!isEmpty(exits)) throw new Error('User already exists');
+    if (!isEmpty(exits)) throw new AppException(ErrorCodes.USER_EXISTS);
 
     const saltHash = this.configService.get(appToken).saltRounds;
 
