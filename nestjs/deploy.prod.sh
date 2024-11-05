@@ -1,0 +1,1 @@
+docker image rm -f nestjs-book-sharing-be && docker compose -f ./docker-compose.yaml up -d
