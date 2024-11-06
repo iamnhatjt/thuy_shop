@@ -1,12 +1,11 @@
 import { Column, Entity, ManyToOne } from 'typeorm';
-import { ProductEntity } from '../../product/entities/product.entity';
 import { ShoppingCardEntity } from './shoping-card.entity';
 import { CommonEntity } from '../../../common/entity/common.entity';
 
 @Entity()
 export class AmountProductEntity extends CommonEntity {
-  @ManyToOne(() => ProductEntity)
-  product: ProductEntity;
+  // @ManyToOne(() => ProductEntity, (product) => product.amountShopCard)
+  // product: ProductEntity;
 
   @ManyToOne(
     () => ShoppingCardEntity,

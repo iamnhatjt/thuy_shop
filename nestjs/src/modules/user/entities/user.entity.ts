@@ -26,7 +26,6 @@ export class UserEntity extends CommonEntity {
   status: number;
 
   @OneToMany(() => AccessTokenEntity, (accessToken) => accessToken.user)
-  @JoinColumn()
   accessTokens!: AccessTokenEntity[];
 
   @OneToOne(() => ShoppingCardEntity, (card) => card.user, {

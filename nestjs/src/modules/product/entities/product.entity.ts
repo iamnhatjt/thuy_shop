@@ -9,16 +9,14 @@ export class ProductEntity extends CommonEntity {
   @Column()
   subtitle: string;
   @Column()
-  listImages: string[];
-  @Column()
   view: number;
   @Column({
     default: 8386,
   })
   amount: number;
 
-  @OneToMany(() => AmountProductEntity, (card) => card.product, {
-    onDelete: 'CASCADE',
-  })
-  amountShopCard: AmountProductEntity[];
+  // @OneToMany(() => AmountProductEntity, (card) => card.product, {
+  //   onDelete: 'CASCADE',
+  // })
+  // amountShopCard: AmountProductEntity[];
 }
