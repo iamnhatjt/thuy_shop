@@ -6,6 +6,8 @@ import { AppConfig, MinIoConfig, SecurityConfig } from './config/app.config';
 import { AuthModule } from './modules/auth/auth.module';
 import { UserModule } from './modules/user/user.module';
 import { StorageModule } from './modules/storage/storage.module';
+import { BannerModule } from './modules/banner/banner.module';
+import { ShoppingCardModule } from './modules/shopping-card/shopping-card.module';
 
 @Module({
   imports: [
@@ -21,6 +23,8 @@ import { StorageModule } from './modules/storage/storage.module';
     AuthModule,
     UserModule,
     StorageModule,
+    BannerModule,
+    ShoppingCardModule,
   ],
 })
 export class AppModule {}

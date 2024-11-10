@@ -15,8 +15,8 @@ export class ProductEntity extends CommonEntity {
   })
   amount: number;
 
-  // @OneToMany(() => AmountProductEntity, (card) => card.product, {
-  //   onDelete: 'CASCADE',
-  // })
-  // amountShopCard: AmountProductEntity[];
+  @OneToMany(() => AmountProductEntity, (card) => card.product, {
+    onDelete: 'CASCADE',
+  })
+  amountShopCard: AmountProductEntity[];
 }
