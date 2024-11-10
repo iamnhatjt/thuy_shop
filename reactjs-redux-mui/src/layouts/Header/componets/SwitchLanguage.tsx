@@ -1,10 +1,10 @@
 import {
-  Select,
-  StackProps,
-  Stack,
   MenuItem,
-  switchClasses,
+  Select,
   SelectChangeEvent,
+  Stack,
+  StackProps,
+  switchClasses,
 } from "@mui/material";
 import { LanguageEnum } from "../../../constant/type";
 import { clientStorage } from "../../../utils/storage";
@@ -19,13 +19,13 @@ const SwitchLanguage = (props: StackProps) => {
     {
       img: "",
       alt: "USA Flag",
-      content: tCommon("common.i18n.en"),
+      content: tCommon("i18n.en"),
       value: LanguageEnum.EN,
     },
     {
       img: "",
       alt: "Vietnamese Flag",
-      content: tCommon("common.i18n.vi"),
+      content: tCommon("i18n.vi"),
       value: LanguageEnum.VI,
     },
   ];

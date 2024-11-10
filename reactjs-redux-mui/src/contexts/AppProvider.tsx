@@ -5,7 +5,6 @@ import i18n from "../utils/i18n";
 import ThemeProvider from "./ThemeProvider";
 import { clientStorage } from "../utils/storage";
 import { ACCESS_TOKEN_STORAGE_KEY } from "../constant";
-import { SIGNIN_PATH, SIGNUP_PATH } from "../constant/paths";
 import { useEffect } from "react";
 import { toggleAppReady, updateAuth } from "../store/app/reducers";
 import { getProfile } from "../store/app/action";
@@ -15,15 +14,15 @@ const AppProvider = ({ children }: { children: React.ReactNode }) => {
     const accessToken = clientStorage.get(ACCESS_TOKEN_STORAGE_KEY);
     store.dispatch(toggleAppReady(true));
 
-    if (
-      !accessToken &&
-      ![SIGNIN_PATH, SIGNUP_PATH].some((path) =>
-        window.location.pathname.includes(path),
-      )
-    ) {
-      window.location.pathname = SIGNIN_PATH;
-      return;
-    }
+    // if (
+    //   !accessToken &&
+    //   ![SIGNIN_PATH, SIGNUP_PATH].some((path) =>
+    //     window.location.pathname.includes(path),
+    //   )
+    // ) {
+    //   window.location.pathname = SIGNIN_PATH;
+    //   return;
+    // }
 
     store.dispatch(updateAuth({ accessToken }));
     store.dispatch(getProfile());

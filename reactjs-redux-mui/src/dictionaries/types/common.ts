@@ -7,4 +7,7 @@ export type CommonDictionary = {
     vi: string;
     en: string;
   };
+  common: {
+    hotline: string;
+  };
 };
