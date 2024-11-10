@@ -3,8 +3,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from '../user/entities/user.entity';
 import { ShoppingCardController } from './shopping-card.controller';
 import { ShoppingCardService } from './shopping-card.service';
-import { ShoppingCardEntity } from './entites/shoping-card.entity';
-import { AmountProductEntity } from './entites/amount-product.entity';
+import { ShoppingCardEntity } from './entities/shoping-card.entity';
+import { AmountProductEntity } from './entities/amount-product.entity';
 
 @Module({
   imports: [

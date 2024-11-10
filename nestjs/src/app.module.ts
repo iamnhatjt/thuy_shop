@@ -8,6 +8,7 @@ import { UserModule } from './modules/user/user.module';
 import { StorageModule } from './modules/storage/storage.module';
 import { BannerModule } from './modules/banner/banner.module';
 import { ShoppingCardModule } from './modules/shopping-card/shopping-card.module';
+import { ProductModule } from './modules/product/product.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { ShoppingCardModule } from './modules/shopping-card/shopping-card.module
     StorageModule,
     BannerModule,
     ShoppingCardModule,
+    ProductModule,
   ],
 })
 export class AppModule {}

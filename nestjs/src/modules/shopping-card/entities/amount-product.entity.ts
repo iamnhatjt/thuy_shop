@@ -1,7 +1,7 @@
 import { Column, Entity, ManyToOne } from 'typeorm';
 import { ShoppingCardEntity } from './shoping-card.entity';
 import { CommonEntity } from '../../../common/entity/common.entity';
-import { ProductEntity } from 'src/modules/product/entities/product.entity';
+import { ProductEntity } from '../../product/entities/product.entity';
 
 @Entity()
 export class AmountProductEntity extends CommonEntity {

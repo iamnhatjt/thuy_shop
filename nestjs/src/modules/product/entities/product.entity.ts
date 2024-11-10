@@ -1,6 +1,6 @@
 import { CommonEntity } from '../../../common/entity/common.entity';
 import { Column, Entity, OneToMany } from 'typeorm';
-import { AmountProductEntity } from '../../shopping-card/entites/amount-product.entity';
+import { AmountProductEntity } from '../../shopping-card/entities/amount-product.entity';
 
 @Entity()
 export class ProductEntity extends CommonEntity {

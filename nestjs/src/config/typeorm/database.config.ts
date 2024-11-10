@@ -16,10 +16,9 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
       database: process.env['MYSQL_DATABASE'],
       entities: [__dirname + '../../../**/entities/*.entity{.ts,.js}'],
       migrations: [__dirname + '../../migrations/*{.ts,.js}'],
-      synchronize: true || process.env.DB_SYNCHRONIZE === 'true',
+      synchronize: process.env.DB_SYNCHRONIZE === 'true',
       logging: process.env.DB_LOGGING === 'true',
       logger: new TypeORMLogger('all'),
-      autoLoadEntities: true,
     };
   }
 }
