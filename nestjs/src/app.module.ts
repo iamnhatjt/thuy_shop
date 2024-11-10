@@ -9,6 +9,7 @@ import { StorageModule } from './modules/storage/storage.module';
 import { BannerModule } from './modules/banner/banner.module';
 import { ShoppingCardModule } from './modules/shopping-card/shopping-card.module';
 import { ProductModule } from './modules/product/product.module';
+import { AppService } from './app.service';
 
 @Module({
   imports: [
@@ -28,5 +29,6 @@ import { ProductModule } from './modules/product/product.module';
     ShoppingCardModule,
     ProductModule,
   ],
+  providers: [AppService],
 })
 export class AppModule {}
