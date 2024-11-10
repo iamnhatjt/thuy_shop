@@ -1,7 +1,8 @@
-import { Column, Entity, OneToMany } from 'typeorm';
+import { Column, Entity, JoinColumn, OneToMany, OneToOne } from 'typeorm';
 import { CommonEntity } from '../../../common/entity/common.entity';
 import { Exclude } from 'class-transformer';
 import { AccessTokenEntity } from '../../auth/entities/access-token.entity';
+import { ShoppingCardEntity } from '../../shopping-card/entities/shoping-card.entity';
 
 @Entity({ name: 'system_user' })
 export class UserEntity extends CommonEntity {
@@ -26,4 +27,10 @@ export class UserEntity extends CommonEntity {
 
   @OneToMany(() => AccessTokenEntity, (accessToken) => accessToken.user)
   accessTokens!: AccessTokenEntity[];
+
+  @OneToOne(() => ShoppingCardEntity, (card) => card.user, {
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn()
+  shoppingCard: ShoppingCardEntity;
 }
