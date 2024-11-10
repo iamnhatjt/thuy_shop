@@ -9,4 +9,7 @@ export const common: CommonDictionary = {
     vi: "Tiếng Việt",
     en: "Tiếng Anh",
   },
+  common: {
+    hotline: "Điện thoại liên hệ",
+  },
 };

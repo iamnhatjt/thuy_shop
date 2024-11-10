@@ -1,7 +1,7 @@
 import { ThemeMode } from "../constant/enums";
 
-const lightColor = '47, 43, 61'
-const darkColor = '208, 212, 241'
+const lightColor = "47, 43, 61";
+const darkColor = "208, 212, 241";
 
 const colorSchemes = {
   [ThemeMode.LIGHT]: {
@@ -11,7 +11,7 @@ const colorSchemes = {
         white: "#FFFFFF",
       },
       primary: {
-        main: "#007BFF", // OK
+        main: "#2d2e7f", // OK
         light: "#E1F0FF", // OK
         dark: "#187DE4", // OK
         contrastText: "#FFFFFF",
@@ -83,9 +83,9 @@ const colorSchemes = {
         paper: "#FFFFFF",
         default: "#F7F7FD",
       },
-      customColor:{
-        main: darkColor
-      }
+      customColor: {
+        main: darkColor,
+      },
     },
   },
   [ThemeMode.DARK]: {
@@ -159,11 +159,10 @@ const colorSchemes = {
         paper: "#313130",
         default: "#3B3A39",
       },
-      customColor:{
-        main: darkColor
-      }
+      customColor: {
+        main: darkColor,
+      },
     },
-
   },
 };
 
