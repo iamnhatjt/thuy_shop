@@ -78,7 +78,7 @@ const colorSchemes = {
         secondary: "rgba(0, 0, 0, .06)",
         disabled: "rgba(0, 0, 0, .38)",
       },
-      divider: "rgba(0, 0, 0, .12)",
+      divider: "#2d2e7f",
       background: {
         paper: "#FFFFFF",
         default: "#F7F7FD",
