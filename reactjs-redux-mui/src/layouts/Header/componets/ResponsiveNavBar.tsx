@@ -5,6 +5,7 @@ import {
   Divider,
   Drawer,
   IconButton,
+  InputBase,
   List,
   ListItem,
   ListItemText,
@@ -12,7 +13,13 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
-import { LocationOn, Person, ShoppingCart, Star } from "@mui/icons-material";
+import {
+  LocationOn,
+  Person,
+  Search,
+  ShoppingCart,
+  Star,
+} from "@mui/icons-material";
 import Logo from "../../sharedComponents/Logo";
 import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
@@ -183,8 +190,37 @@ function Header() {
           margin: "0px 20px",
         }}
       />
+      {!isMdSmaller && (
+        <Stack
+          direction="row"
+          justifyContent="space-between"
+          width="auto"
+          mx="20px"
+          my="10px"
+        >
+          <Stack>item bar</Stack>
+          <Stack>
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                backgroundColor: "#f3f3ff",
+                borderRadius: "30px",
+                paddingLeft: 2,
+                paddingRight: 1,
+                width: "400px",
+              }}
+            >
+              <InputBase placeholder="Tìm kiếm nhanh" fullWidth />
+              <IconButton type="submit" sx={{ color: "#2C2A8A" }}>
+                <Search />
+              </IconButton>
+            </Box>
+          </Stack>
+        </Stack>
+      )}
     </AppBar>
   );
 }
 
-export default Header;
+export default React.memo(Header);
