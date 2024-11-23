@@ -25,6 +25,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import { Link } from "react-router-dom";
 import useBreakpoint from "../../../hooks/useBreakpoint";
+import { Icon } from "@iconify/react";
 
 interface NavItem {
   title: string;
@@ -32,7 +33,7 @@ interface NavItem {
   subtitle?: { title: string; url: string }[];
 }
 
-const NavBar: NavItem[] = [
+const listNavBar: NavItem[] = [
   {
     title: "Chăn Ga Gối đệm",
     url: "/chan-ga-goi-dem",
@@ -120,7 +121,7 @@ function Header() {
                 <Logo />
               </Stack>
               <List>
-                {NavBar.map((navItem) => (
+                {listNavBar.map((navItem) => (
                   <React.Fragment key={navItem.url}>
                     <ListItem component={Link} to={navItem.url}>
                       <ListItemText primary={navItem.title} />
@@ -190,15 +191,73 @@ function Header() {
           margin: "0px 20px",
         }}
       />
+
+      {/* !! For small screen */}
       {!isMdSmaller && (
         <Stack
           direction="row"
           justifyContent="space-between"
           width="auto"
+          alignItems="center"
           mx="20px"
           my="10px"
         >
-          <Stack>item bar</Stack>
+          <Stack
+            direction="row"
+            justifyContent="space-evenly"
+            className="header-nav-large"
+            width="100%"
+          >
+            {listNavBar.map((item) => (
+              <div className="header-nav-title">
+                <Link
+                  style={{
+                    textDecoration: "none",
+                    color: "inherit",
+                  }}
+                  to={item.url}
+                >
+                  <Typography variant="body1" fontWeight={700} color="#2d2e7f">
+                    {item.title}
+                  </Typography>
+                </Link>
+                {!!item.subtitle && (
+                  <Icon
+                    icon="gridicons:dropdown"
+                    style={{
+                      height: "100%",
+                      fontWeight: 500,
+                      fontSize: "25px",
+                    }}
+                  ></Icon>
+                )}
+                {!!item.subtitle && (
+                  <ul className="header-nav-subtitle">
+                    {item.subtitle.map((subItem) => (
+                      <li>
+                        <Link
+                          to={subItem.url}
+                          style={{
+                            textDecoration: "none",
+                            color: "inherit",
+                          }}
+                        >
+                          <Typography
+                            variant="body1"
+                            sx={{
+                              padding: "8px 12px",
+                            }}
+                          >
+                            {subItem.title}
+                          </Typography>
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            ))}
+          </Stack>
           <Stack>
             <Box
               sx={{
