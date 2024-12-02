@@ -23,4 +23,30 @@ export class StorageService implements OnModuleInit {
       logger.error(error);
     }
   }
+
+  async uploadFile(
+    dataBuffer: Buffer,
+    objectName: string,
+    mimeType: string,
+  ): Promise<void> {
+    const bucketName = this.minioConfig.bucketName;
+    await this.minioService.client.putObject(
+      bucketName,
+      objectName,
+      dataBuffer,
+      {
+        'Content-Type': mimeType,
+      },
+    );
+  }
+
+  async getPresignedUrl(objectName: string) {
+    const { bucketName, presignedTimeOut } = this.minioConfig;
+
+    return await this.minioService.client.presignedGetObject(
+      bucketName,
+      objectName,
+      parseInt(presignedTimeOut ?? '3600'),
+    );
+  }
 }
