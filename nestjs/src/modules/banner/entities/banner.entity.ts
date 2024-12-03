@@ -11,6 +11,9 @@ export class BannerEntity extends CommonEntity {
   })
   isDisable: boolean;
 
+  @Column()
+  url?: string;
+
   constructor(partial?: Partial<BannerEntity>) {
     super();
     if (partial) Object.assign(this, partial);

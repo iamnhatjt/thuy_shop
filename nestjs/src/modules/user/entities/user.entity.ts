@@ -3,6 +3,7 @@ import { CommonEntity } from '../../../common/entity/common.entity';
 import { Exclude } from 'class-transformer';
 import { AccessTokenEntity } from '../../auth/entities/access-token.entity';
 import { ShoppingCardEntity } from '../../shopping-card/entities/shoping-card.entity';
+import { UserRoleEnum } from '../enums/user-role.enum';
 
 @Entity({ name: 'system_user' })
 export class UserEntity extends CommonEntity {
@@ -24,6 +25,15 @@ export class UserEntity extends CommonEntity {
 
   @Column({ name: 'status', nullable: false })
   status: number;
+
+  @Column({
+    name: 'role',
+    nullable: false,
+    type: 'enum',
+    enum: UserRoleEnum,
+    default: UserRoleEnum.USER,
+  })
+  role: UserRoleEnum;
 
   @OneToMany(() => AccessTokenEntity, (accessToken) => accessToken.user)
   accessTokens!: AccessTokenEntity[];

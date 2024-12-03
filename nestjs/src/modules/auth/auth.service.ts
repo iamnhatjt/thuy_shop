@@ -15,7 +15,7 @@ export class AuthService {
     const user = await this.userService.findAccount(dto);
     const tokens = await this.tokenService.generateAccessToken(
       user.id,
-      'admin',
+      user.role,
     );
     return tokens;
   }
