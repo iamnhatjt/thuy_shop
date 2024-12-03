@@ -4,9 +4,15 @@ import { CommonEntity } from '../../../common/entity/common.entity';
 @Entity()
 export class BannerEntity extends CommonEntity {
   @Column()
-  image: string;
+  fileName: string;
+
   @Column({
-    default: true,
+    default: false,
   })
   isDisable: boolean;
+
+  constructor(partial?: Partial<BannerEntity>) {
+    super();
+    if (partial) Object.assign(this, partial);
+  }
 }
