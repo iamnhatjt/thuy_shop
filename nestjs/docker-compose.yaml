@@ -15,7 +15,7 @@ services:
     networks:
       - book-sharing
 
-  mysql:
+  mysql-thuy-shop:
     image: mysql:latest
     container_name: BookSharing
     env_file:
@@ -32,7 +32,7 @@ services:
     networks:
       - book-sharing
 
-  minIo-storage:
+  minIo-storage-thuy-shop:
     image: quay.io/minio/minio
     command: server /data --console-address ":9001"
     environment:

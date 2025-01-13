@@ -22,15 +22,13 @@ export function setupSwagger(
     .setVersion('1.0');
 
   // auth security
-  documentBuilder.addBearerAuth(
-    {
-      description: 'Enter your JWT token',
-      type: 'http',
-      scheme: 'bearer',
-      bearerFormat: 'JWT',
-    },
-    'Authorization',
-  );
+  documentBuilder.addBearerAuth({
+    description: `Please enter token in following format: <JWT>`,
+    name: 'Authorization',
+    bearerFormat: 'Bearer',
+    type: 'http',
+    in: 'Header',
+  });
 
   const document = SwaggerModule.createDocument(app, documentBuilder.build(), {
     ignoreGlobalPrefix: false,

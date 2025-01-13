@@ -10,6 +10,7 @@ import { appToken } from '../../config/app.config';
 import { UserStatus } from './user.contants';
 import { AppException } from '../../common/exceptions/app.exception';
 import { ErrorCodes } from '../../common/errors/error-code.constant';
+import { UserRoleEnum } from './enums/user-role.enum';
 
 @Injectable()
 export class UserService {
@@ -29,7 +30,7 @@ export class UserService {
     return user;
   }
 
-  async register({ email, password }) {
+  async register({ email, password, isAdmin = false }) {
     const exits = await this.userRepository.findOneBy({
       email,
     });
@@ -43,8 +44,9 @@ export class UserService {
       email,
       password: hashPassword,
       status: UserStatus.Enabled,
+      role: isAdmin ? UserRoleEnum.ADMIN : UserRoleEnum.USER,
     });
-    await this.userRepository.save(user);
+    await user.save();
     return user;
   }
 }

@@ -1,16 +1,15 @@
-import { Expose } from 'class-transformer';
+import { Exclude, Expose } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
+import { ExposeDisplay } from '../decorator/expose-display.decorator';
 
+@Exclude()
 export class CommonDto {
-  @ApiProperty({ description: '' })
-  @Expose()
+  @ExposeDisplay()
   id: number;
 
-  @ApiProperty({ description: '' })
-  @Expose()
+  @ExposeDisplay()
   createdAt: Date;
 
-  @ApiProperty({ description: '' })
-  @Expose()
+  @ExposeDisplay()
   updatedAt: Date;
 }

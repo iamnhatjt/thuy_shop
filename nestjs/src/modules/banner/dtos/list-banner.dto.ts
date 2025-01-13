@@ -1,13 +1,13 @@
-import { Expose } from 'class-transformer';
+import { Exclude, Expose } from 'class-transformer';
 import { CommonDto } from '../../../common/dto/common.dto';
 import { ApiProperty } from '@nestjs/swagger';
+import { ExposeDisplay } from 'src/common/decorator/expose-display.decorator';
 
+@Exclude()
 export class ListBannerDto extends CommonDto {
-  @ApiProperty({ description: '' })
-  @Expose()
+  @ExposeDisplay()
   fileName: string;
 
-  @ApiProperty({ description: '' })
-  @Expose({})
+  @ExposeDisplay()
   url: string;
 }
