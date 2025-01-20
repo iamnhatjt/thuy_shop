@@ -17,11 +17,13 @@ export class AuthService {
   ) {}
 
   async seedAdminAccount() {
-    await this.userService.register({
-      email: 'admin1@gmail.com',
-      password: 'admin',
-      isAdmin: true,
-    });
+    await this.userService
+      .register({
+        email: 'admin1@gmail.com',
+        password: 'admin',
+        isAdmin: true,
+      })
+      .catch((err) => {});
   }
 
   async login(dto: AuthDto): Promise<RefreshTokenDto> {

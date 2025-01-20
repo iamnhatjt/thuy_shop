@@ -19,11 +19,12 @@ export class BannerService {
   async uploadBanner(file: Express.Multer.File) {
     const url = `banner/${generateUUID(14)}`;
 
+    await this.storageService.uploadFile(file.buffer, url, file.mimetype);
     const newBanner = BannerEntity.create({
       fileName: url,
       isDisable: false,
+      url: await this.storageService.getPresignedUrl(url),
     });
-    await this.storageService.uploadFile(file.buffer, url, file.mimetype);
     await newBanner.save();
   }
 
