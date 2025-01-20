@@ -6,7 +6,6 @@ import { RefreshTokenDto } from './dto/refresh-token.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from '../user/entities/user.entity';
 import { Repository } from 'typeorm';
-import { UserStatus } from '../user/user.contants';
 
 @Injectable()
 export class AuthService {

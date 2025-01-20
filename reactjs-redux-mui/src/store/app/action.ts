@@ -1,5 +1,4 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { client } from "../../api/client";
 import { Endpoint } from "../../api/endpoint";
 import { HttpStatusCode } from "axios";
 import { AN_ERROR_TRY_RELOAD_PAGE } from "../../constant";
@@ -13,7 +12,7 @@ export const signin = createAsyncThunk(
   "app/signin",
   async (data: SigninData) => {
     try {
-      const response = await client.post(Endpoint.REFRESH_TOKEN, data);
+      const response: any = {};
       if (response?.status === HttpStatusCode.Ok) {
         return response.data;
       }
@@ -26,7 +25,8 @@ export const signin = createAsyncThunk(
 
 export const getProfile = createAsyncThunk("app/getProfile", async () => {
   try {
-    const response = await client.get(Endpoint.GET_PROFILE);
+    const response: any = {};
+
     if (response?.status === HttpStatusCode.Ok) {
       return response;
     }
