@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Box, Typography, Button, IconButton } from "@mui/material";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import { useGetListBannersQuery } from "store/banner/bannerApiSlice";
 
 interface Slide {
   image: string;
@@ -31,6 +32,8 @@ const slides: Slide[] = [
 ];
 
 const Banner: React.FC = () => {
+  const { data: slide } = useGetListBannersQuery({});
+
   const [activeIndex, setActiveIndex] = useState(0);
 
   const handleNext = () => {
@@ -42,6 +45,7 @@ const Banner: React.FC = () => {
       prevIndex === 0 ? slides.length - 1 : prevIndex - 1,
     );
   };
+  console.log(slide);
 
   return (
     <Box

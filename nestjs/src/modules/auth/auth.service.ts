@@ -6,7 +6,6 @@ import { RefreshTokenDto } from './dto/refresh-token.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from '../user/entities/user.entity';
 import { Repository } from 'typeorm';
-import { UserStatus } from '../user/user.contants';
 
 @Injectable()
 export class AuthService {
@@ -18,11 +17,13 @@ export class AuthService {
   ) {}
 
   async seedAdminAccount() {
-    await this.userService.register({
-      email: 'admin1@gmail.com',
-      password: 'admin',
-      isAdmin: true,
-    });
+    await this.userService
+      .register({
+        email: 'admin1@gmail.com',
+        password: 'admin',
+        isAdmin: true,
+      })
+      .catch((err) => {});
   }
 
   async login(dto: AuthDto): Promise<RefreshTokenDto> {

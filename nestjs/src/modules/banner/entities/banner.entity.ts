@@ -11,7 +11,9 @@ export class BannerEntity extends CommonEntity {
   })
   isDisable: boolean;
 
-  @Column()
+  @Column({
+    type: 'longtext',
+  })
   url?: string;
 
   constructor(partial?: Partial<BannerEntity>) {

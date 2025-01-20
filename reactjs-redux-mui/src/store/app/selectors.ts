@@ -6,7 +6,7 @@ import { LanguageEnum } from "../../constant/type";
 import { useTranslation } from "react-i18next";
 import { clientStorage } from "../../utils/storage";
 import { LANGUAGE_STORAGE_KEY } from "../../constant";
-import { onExpandedSlidebar } from "./reducers";
+import { onExpandedSlideBar } from "./reducers";
 
 export const useAuth = () => {
   const dispath = useAppDispatch();
@@ -50,7 +50,7 @@ export const useSidebar = () => {
 
   const onToogleExandSidebar = useCallback(
     (newStatus?: boolean) => {
-      dispath(onExpandedSlidebar(newStatus));
+      dispath(onExpandedSlideBar(newStatus));
     },
     [dispath],
   );
