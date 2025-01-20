@@ -7,7 +7,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiConsumes, ApiProperty, ApiTags } from '@nestjs/swagger';
 import { BaseController } from '../../common/bases/controller.base';
 import { PaginationResponse } from '../../common/decorator/pagination-response.decoration';
 import { RoleAccess } from '../../common/decorator/role-access.decorator';
@@ -38,7 +38,10 @@ export class BannerController extends BaseController {
 
   @PaginationResponse(ListBannerDto)
   @Get('')
-  async getListBanner(@Query() pagination: PaginationDto) {
+  async getListBanner(
+    @Query()
+    pagination: PaginationDto,
+  ) {
     const [data, totalCount] =
       await this.bannerService.getListBanners(pagination);
     return this.paginationResponse(data, pagination, totalCount);

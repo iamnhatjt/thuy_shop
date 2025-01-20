@@ -36,11 +36,6 @@ export class BannerService {
       .skip(pagination.pageSize * (pagination.pageNum - 1))
       .take(pagination.pageSize)
       .getManyAndCount();
-
-    for (const banner of listBanner) {
-      banner.url = await this.storageService.getPresignedUrl(banner.fileName);
-    }
-
     return [plainToInstance(ListBannerDto, listBanner), total];
   }
 }

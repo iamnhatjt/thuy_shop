@@ -26,7 +26,6 @@ export const signin = createAsyncThunk(
 export const getProfile = createAsyncThunk("app/getProfile", async () => {
   try {
     const response: any = {};
-
     if (response?.status === HttpStatusCode.Ok) {
       return response;
     }
