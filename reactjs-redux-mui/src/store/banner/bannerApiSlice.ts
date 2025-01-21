@@ -8,7 +8,13 @@ export const bannerApiSlice = createApi({
   tagTypes: ["Banners"],
   endpoints: (builder) => ({
     getListBanners: builder.query({
-      query: () => Endpoint.BANNER,
+      query: () => ({
+        url: Endpoint.BANNER,
+        params: {
+          pageNum: 1,
+          pageSize: 10,
+        },
+      }),
     }),
   }),
 });

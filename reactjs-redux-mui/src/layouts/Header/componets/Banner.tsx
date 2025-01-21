@@ -32,7 +32,7 @@ const slides: Slide[] = [
 ];
 
 const Banner: React.FC = () => {
-  const { data: slide } = useGetListBannersQuery({});
+  const { data: slide } = useGetListBannersQuery(undefined);
 
   const [activeIndex, setActiveIndex] = useState(0);
 
