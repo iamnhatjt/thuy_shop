@@ -5,6 +5,7 @@ import {
 } from "react-router-dom";
 import MainLayout from "./layouts/MainLayout";
 import Signin from "./features/Signin";
+import Home from "features/home";
 const listRouterPaths: RouteObject[] = [
   // with no wrapper
   {
@@ -18,7 +19,7 @@ const listRouterPaths: RouteObject[] = [
     children: [
       {
         path: "",
-        element: <h1>Hello world</h1>,
+        element: <Home />,
       },
     ],
   },

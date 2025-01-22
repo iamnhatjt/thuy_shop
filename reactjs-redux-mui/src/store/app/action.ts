@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { Endpoint } from "../../api/endpoint";
+import { Endpoint } from "../../constant/endpoint";
 import { HttpStatusCode } from "axios";
 import { AN_ERROR_TRY_RELOAD_PAGE } from "../../constant";
 
