@@ -8,7 +8,9 @@ import { appToken } from './config/app.config';
 import 'reflect-metadata';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    cors: true,
+  });
   const configService = app.get(ConfigService);
   app.useGlobalInterceptors(
     new LoggingInterceptor(),

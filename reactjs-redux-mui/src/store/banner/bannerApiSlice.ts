@@ -1,6 +1,11 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
-import { Endpoint } from "api/endpoint";
+import { Endpoint } from "constant/endpoint";
 import customFetchBase from "store/customFetchBase";
+
+export interface ISlide {
+  fileName: string;
+  url: string;
+}
 
 export const bannerApiSlice = createApi({
   reducerPath: "bannerApi",
@@ -15,6 +20,7 @@ export const bannerApiSlice = createApi({
           pageSize: 10,
         },
       }),
+      providesTags: ["Banners"],
     }),
   }),
 });

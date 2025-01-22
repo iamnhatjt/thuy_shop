@@ -1,7 +1,5 @@
-import { BaseQueryFn, fetchBaseQuery, RootState } from "@reduxjs/toolkit/query";
+import { fetchBaseQuery } from "@reduxjs/toolkit/query";
 import { ACCESS_TOKEN_STORAGE_KEY, API_URL } from "constant";
-import { get } from "http";
-import { config } from "process";
 import { clientStorage } from "utils/storage";
 
 const customFetchBase = fetchBaseQuery({

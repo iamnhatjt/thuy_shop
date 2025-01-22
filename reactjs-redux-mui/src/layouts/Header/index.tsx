@@ -2,14 +2,12 @@ import { Stack } from "@mui/material";
 import React from "react";
 import TopHotline from "./componets/TopHotline";
 import ResponsiveNavbar from "./componets/ResponsiveNavBar";
-import Banner from "./componets/Banner";
 
-const Header = () => {
+const Header: React.FC = () => {
   return (
     <Stack>
       <TopHotline />
       <ResponsiveNavbar />
-      <Banner />
 
       {/*<Stack*/}
       {/*  height={HEADER_HEIGHT}*/}
