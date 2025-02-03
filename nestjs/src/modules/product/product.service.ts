@@ -3,12 +3,17 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
 import { ProductEntity } from './entities/product.entity';
 import { Repository } from 'typeorm';
+import { ProductDto } from './dtos/product.dto';
+import { generateUUID } from 'src/utils';
+import { StorageService } from '../storage/storage.service';
+import { ProductImageEntity } from './entities/product-image.entity';
 
 @Injectable()
 export class ProductService {
   constructor(
     @InjectRepository(ProductEntity)
     private readonly productRepo: Repository<ProductEntity>,
+    private storageService: StorageService,
   ) {}
 
   async getPaginationProduct(
@@ -30,5 +35,21 @@ export class ProductService {
         id: id,
       },
     });
+  }
+
+  async createProduct(dto: ProductDto, listImage: Express.Multer.File[]) {
+    const newProduct = ProductEntity.create({
+      ...dto,
+    });
+    for (const image of listImage) {
+      const url = `product/${generateUUID(14)}`;
+      await this.storageService.uploadFile(image.buffer, url, image.mimetype);
+      const newImage = ProductImageEntity.create({
+        url,
+      });
+      newProduct.images.push(newImage);
+    }
+    await newProduct.save();
+    return newProduct;
   }
 }
