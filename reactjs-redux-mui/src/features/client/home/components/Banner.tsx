@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { Box, Typography, Button, IconButton } from "@mui/material";
+import { Box, IconButton } from "@mui/material";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { ISlide, useGetListBannersQuery } from "store/banner/bannerApiSlice";
 import { IResponsePagination } from "common/response.interface";
+import Loading from "../../../../layouts/sharedComponents/Loading";
 
 const Banner: React.FC = () => {
   const { data, isFetching } = useGetListBannersQuery(undefined);
@@ -21,7 +22,7 @@ const Banner: React.FC = () => {
   };
 
   if (isFetching) {
-    return <Box>Loading...</Box>;
+    return <Loading />;
   }
   return (
     <Box

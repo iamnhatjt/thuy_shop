@@ -22,7 +22,14 @@ export const bannerApiSlice = createApi({
       }),
       providesTags: ["Banners"],
     }),
+    getListBannerPagination: builder.query({
+      query: (params) => ({
+        url: Endpoint.BANNER,
+        params,
+      }),
+    }),
   }),
 });
 
-export const { useGetListBannersQuery } = bannerApiSlice;
+export const { useGetListBannersQuery, useGetListBannerPaginationQuery } =
+  bannerApiSlice;
