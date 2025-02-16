@@ -19,7 +19,7 @@ export class BannerService {
   async uploadBanner(file: Express.Multer.File) {
     const url = `banner/${generateUUID(14)}`;
 
-    await this.storageService.uploadFile(file.buffer, url, file.mimetype);
+    await this.storageService.uploadFile(file.buffer, url, 'image/jpeg');
     const newBanner = BannerEntity.create({
       fileName: url,
       isDisable: false,

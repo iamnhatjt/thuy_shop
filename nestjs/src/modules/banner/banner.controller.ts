@@ -7,13 +7,11 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { ApiBody, ApiConsumes, ApiProperty, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { BaseController } from '../../common/bases/controller.base';
 import { PaginationResponse } from '../../common/decorator/pagination-response.decoration';
-import { RoleAccess } from '../../common/decorator/role-access.decorator';
 import { PaginationDto } from '../../common/dto/pagination.dto';
 import { FileUploadDto } from '../../common/dto/upload-file.dto';
-import { UserRoleEnum } from '../user/enums/user-role.enum';
 import { BannerService } from './banner.service';
 import { ListBannerDto } from './dtos/list-banner.dto';
 
@@ -28,7 +26,7 @@ export class BannerController extends BaseController {
   @ApiBody({
     type: FileUploadDto,
   })
-  @RoleAccess([UserRoleEnum.ADMIN])
+  // @RoleAccess([UserRoleEnum.ADMIN])
   @Post('')
   @UseInterceptors(FileInterceptor('file'))
   async uploadImage(@UploadedFile() file: Express.Multer.File) {

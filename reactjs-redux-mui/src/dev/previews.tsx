@@ -6,6 +6,7 @@ import AdminDrawer from "../layouts/Header/componets/AdminDrawer";
 import Signin from "../features/client/Signin";
 import React from "react";
 import BannerTable from "../features/admin/banner/components/BannerTable";
+import AdminBanner from "../features/admin/banner";
 
 const ComponentPreviews: React.FC = () => {
   return (
@@ -24,6 +25,9 @@ const ComponentPreviews: React.FC = () => {
       </ComponentPreview>
       <ComponentPreview path="/BannerTable">
         <BannerTable />
+      </ComponentPreview>
+      <ComponentPreview path="/AdminBanner">
+        <AdminBanner />
       </ComponentPreview>
     </Previews>
   );

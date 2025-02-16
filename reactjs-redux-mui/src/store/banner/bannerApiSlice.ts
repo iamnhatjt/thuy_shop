@@ -28,8 +28,18 @@ export const bannerApiSlice = createApi({
         params,
       }),
     }),
+    addBanner: builder.mutation({
+      query: (banner) => ({
+        url: Endpoint.BANNER,
+        method: "POST",
+        body: banner,
+      }),
+    }),
   }),
 });
 
-export const { useGetListBannersQuery, useGetListBannerPaginationQuery } =
-  bannerApiSlice;
+export const {
+  useGetListBannersQuery,
+  useGetListBannerPaginationQuery,
+  useAddBannerMutation,
+} = bannerApiSlice;

@@ -1,4 +1,4 @@
-interface IPagination {
+export interface IPagination {
   pageNum: number;
   pageSize: number;
   totalCount: number;
