@@ -1,12 +1,19 @@
 import AdminDrawer from "./Header/componets/AdminDrawer";
-import { Stack } from "@mui/material";
+import { Box, Stack } from "@mui/material";
 import { Outlet } from "react-router-dom";
 
 const AdminLayout = () => {
   return (
     <Stack direction="row">
       <AdminDrawer />
-      <Outlet />
+      <Box
+        sx={{
+          marginLeft: "240px",
+          width: "100%",
+        }}
+      >
+        <Outlet />
+      </Box>
     </Stack>
   );
 };

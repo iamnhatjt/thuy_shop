@@ -13,6 +13,7 @@ import {
   HOME_PATH,
   SIGNIN_PATH,
 } from "./constant/paths";
+import AdminBanner from "./features/admin/banner";
 
 const listRouterPaths: RouteObject[] = [
   // with no wrapper
@@ -38,7 +39,7 @@ const listRouterPaths: RouteObject[] = [
     children: [
       {
         path: ADMIN_BANNER_PATH,
-        element: <>12</>,
+        element: <AdminBanner />,
       },
     ],
   },
