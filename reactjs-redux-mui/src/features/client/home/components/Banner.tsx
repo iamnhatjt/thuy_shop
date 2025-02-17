@@ -41,26 +41,26 @@ const Banner: React.FC = () => {
           transform: `translateX(-${activeIndex * 100}%)`,
         }}
       >
-        {listSlides.data?.map((slide: ISlide, index: number) => (
-          <Box
-            key={index}
-            sx={{
-              minWidth: "100%",
-              height: "100%",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              backgroundPosition: "center",
-            }}
-          >
-            <img
-              src={slide.url}
-              alt={slide.fileName}
-              loading="lazy"
-              style={{ minWidth: "100%", height: "30vh", objectFit: "cover" }}
-            />
-          </Box>
-        ))}
+        {/*{listSlides.data?.map((slide: ISlide, index: number) => (*/}
+        {/*  <Box*/}
+        {/*    key={index}*/}
+        {/*    sx={{*/}
+        {/*      minWidth: "100%",*/}
+        {/*      height: "100%",*/}
+        {/*      display: "flex",*/}
+        {/*      alignItems: "center",*/}
+        {/*      justifyContent: "center",*/}
+        {/*      backgroundPosition: "center",*/}
+        {/*    }}*/}
+        {/*  >*/}
+        {/*    <img*/}
+        {/*      src={slide.url}*/}
+        {/*      alt={slide.fileName}*/}
+        {/*      loading="lazy"*/}
+        {/*      style={{ minWidth: "100%", height: "30vh", objectFit: "cover" }}*/}
+        {/*    />*/}
+        {/*  </Box>*/}
+        {/*))}*/}
       </Box>
 
       {/* Navigation Arrows */}

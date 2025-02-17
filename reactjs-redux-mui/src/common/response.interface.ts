@@ -5,7 +5,7 @@ export interface IPagination {
 }
 
 export interface IResponse<T> {
-  data: T;
+  data: T[];
   code: string;
 }
 
