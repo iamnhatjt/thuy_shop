@@ -1,9 +1,9 @@
 import React from "react";
-import { useGetListBannerPaginationQuery } from "../../../../store/banner/bannerApiSlice";
 import Loading from "../../../../layouts/sharedComponents/Loading";
 import TableCustom, {
   ColumnTableType,
 } from "../../../../layouts/sharedComponents/TableCustom";
+import { useAdminBanner } from "../../../../store/banner/selectors";
 
 interface BannerDataInterface {
   id: number;
@@ -14,14 +14,9 @@ interface BannerDataInterface {
 }
 
 const BannerTable: React.FC = () => {
-  const { data, isLoading } = useGetListBannerPaginationQuery({
-    pageNum: 1,
-    pageSize: 10,
-  });
+  const { bannerResPagination, isLoading } = useAdminBanner();
 
-  console.log(data);
-
-  const columns: ColumnTableType[] = data && [
+  const columns: ColumnTableType[] = bannerResPagination && [
     {
       columnName: "File Name",
       fieldName: "fileName",
@@ -49,8 +44,8 @@ const BannerTable: React.FC = () => {
     <>
       <TableCustom
         columns={columns}
-        rows={data.data}
-        pagination={data.pagination}
+        rows={bannerResPagination.data}
+        pagination={bannerResPagination.pagination}
       />
     </>
   );

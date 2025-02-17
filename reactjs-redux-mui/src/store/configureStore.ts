@@ -1,10 +1,7 @@
 import { configureStore, Middleware } from "@reduxjs/toolkit";
-import appReducer, { AppState } from "./app/reducers";
+import appReducer from "./app/reducers";
+import bannerSlice from "./banner/reducers";
 import { bannerApiSlice } from "./banner/bannerApiSlice";
-
-export interface State {
-  app: AppState;
-}
 
 const listApiSlices = [bannerApiSlice];
 
@@ -22,6 +19,7 @@ const apiMiddleware = listApiSlices.reduce<Middleware[]>((acc, slice) => {
 export const store = configureStore({
   reducer: {
     app: appReducer,
+    banner: bannerSlice,
     ...apiReducer,
   },
   middleware: (getDefaultMiddleware) =>
