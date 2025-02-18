@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { bannerApiSlice } from "./bannerApiSlice";
-import { IResponsePagination } from "../../common/response.interface";
+import { IResponsePagination, PaginationInterface } from "../../constant/type";
 
-interface BannerDataInterface {
+export interface BannerDataInterface {
   id: number;
   createdAt: string;
   updatedAt: string;
@@ -13,10 +13,15 @@ interface BannerDataInterface {
 export interface AdminBannerState {
   isOpenAddingPopup: boolean;
   bannerResPagination?: IResponsePagination<BannerDataInterface>;
+  pagination: PaginationInterface;
 }
 
 const initialState: AdminBannerState = {
   isOpenAddingPopup: false,
+  pagination: {
+    pageNum: 1,
+    pageSize: 10,
+  },
 };
 
 const bannerSlice = createSlice({
@@ -29,6 +34,13 @@ const bannerSlice = createSlice({
     ) => {
       state.isOpenAddingPopup = action.payload;
     },
+
+    onChangePaginationState: (
+      state: AdminBannerState,
+      action: PayloadAction<PaginationInterface>,
+    ) => {
+      state.pagination = action.payload;
+    },
   },
   extraReducers: (builder) =>
     builder.addMatcher(
@@ -39,6 +51,7 @@ const bannerSlice = createSlice({
     ),
 });
 
-export const { onToggleAddingBannerPopup } = bannerSlice.actions;
+export const { onToggleAddingBannerPopup, onChangePaginationState } =
+  bannerSlice.actions;
 
 export default bannerSlice.reducer;

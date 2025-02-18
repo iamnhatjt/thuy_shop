@@ -1,6 +1,7 @@
 import { ThemeMode } from "../constant/enums";
 import { clientStorage } from "./storage";
 import { DARK_THEME_MEDIA_SYSTEM } from "../constant";
+import dayjs from "dayjs";
 
 export const sleep = (ms: number) =>
   new Promise((resolve) => setTimeout(resolve, ms));
@@ -35,4 +36,8 @@ export const getThemeSystem = (e?: MediaQueryList): ThemeMode => {
   const isDark = e.matches;
   const ThemeSystem = isDark ? ThemeMode.DARK : ThemeMode.LIGHT;
   return ThemeSystem;
+};
+
+export const formatDate = (isoString: string): string => {
+  return dayjs(isoString).format("HH:mm - DD:MM:YYYY");
 };

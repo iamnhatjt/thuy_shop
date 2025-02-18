@@ -1,31 +1,31 @@
 import { useAppDispatch, useAppSelector } from "../hooks";
-import { useCallback, useEffect } from "react";
-import { AdminBannerState, onToggleAddingBannerPopup } from "./reducers";
+import { useCallback } from "react";
+import {
+  AdminBannerState,
+  onChangePaginationState,
+  onToggleAddingBannerPopup,
+} from "./reducers";
 import {
   useAddBannerMutation,
   useGetListBannerPaginationQuery,
 } from "./bannerApiSlice";
+import { shallowEqual } from "react-redux";
+import { PaginationInterface } from "../../constant/type";
 
 export const useAdminBanner = () => {
+  const { isOpenAddingPopup, pagination } = useAppSelector<AdminBannerState>(
+    (state) => state.banner,
+    shallowEqual,
+  );
+
+  const dispath = useAppDispatch();
+
   const [addBanner] = useAddBannerMutation();
   const {
     data: bannerResPagination,
     isLoading,
     refetch,
-  } = useGetListBannerPaginationQuery({
-    pageNum: 4,
-    pageSize: 10,
-  });
-
-  useEffect(() => {
-    refetch();
-  }, []);
-
-  const dispath = useAppDispatch();
-
-  const { isOpenAddingPopup } = useAppSelector<AdminBannerState>(
-    (state) => state.banner,
-  );
+  } = useGetListBannerPaginationQuery(pagination);
 
   const onAddingBanner = useCallback(
     async (file: any) => {
@@ -45,11 +45,19 @@ export const useAdminBanner = () => {
     [dispath],
   );
 
+  const onChangePagination = useCallback(
+    (pagination: PaginationInterface) => {
+      dispath(onChangePaginationState(pagination));
+    },
+    [dispath],
+  );
+
   return {
     isOpenAddingPopup,
     onAddingBanner,
     onToggleOpenBanner,
     bannerResPagination,
     isLoading,
+    onChangePagination,
   };
 };

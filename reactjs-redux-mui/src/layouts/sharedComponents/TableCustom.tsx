@@ -11,14 +11,15 @@ import {
   Typography,
 } from "@mui/material";
 import { SxProps } from "@mui/system";
-import { IPagination } from "../../common/response.interface";
 import { TableContainerProps } from "@mui/material/TableContainer/TableContainer";
+import { IPagination } from "../../constant/type";
 
 interface TableCustomProps {
   columns: ColumnTableType[];
   rows: any[];
   pagination: IPagination;
   tableContainerProps?: TableContainerProps;
+  onChangePageNumber: (pageNum: number) => void;
 }
 
 export interface ColumnTableType {
@@ -33,7 +34,7 @@ const TableCustom: React.FC<TableCustomProps> = ({
   columns,
   rows,
   pagination,
-  tableContainerProps,
+  onChangePageNumber,
 }) => {
   return (
     <>
@@ -49,12 +50,12 @@ const TableCustom: React.FC<TableCustomProps> = ({
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((data, key: number) => (
+            {rows.map((data: any, key: number) => (
               <TableRow key={key}>
                 {columns.map((column: ColumnTableType, index: number) => (
                   <TableCell key={index} sx={column.sxData} align="center">
                     {column?.customDisplay ? (
-                      <column.customDisplay data={data} />
+                      column.customDisplay(data)
                     ) : (
                       <Typography variant="subtitle2">
                         {data[column.fieldName]}
@@ -77,6 +78,9 @@ const TableCustom: React.FC<TableCustomProps> = ({
         <Pagination
           count={Math.ceil(pagination.totalCount / pagination.pageSize)}
           variant="outlined"
+          onChange={(event: any, pageNum: number) =>
+            onChangePageNumber(pageNum)
+          }
         />
       </Box>
     </>
