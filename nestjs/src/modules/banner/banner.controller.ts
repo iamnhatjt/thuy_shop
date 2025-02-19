@@ -1,6 +1,8 @@
 import {
   Controller,
+  Delete,
   Get,
+  Param,
   Post,
   Query,
   UploadedFile,
@@ -43,5 +45,12 @@ export class BannerController extends BaseController {
     const [data, totalCount] =
       await this.bannerService.getListBanners(pagination);
     return this.paginationResponse(data, pagination, totalCount);
+  }
+
+  // @RoleAccess([UserRoleEnum.ADMIN])
+  @Delete(':id')
+  async deleteBanner(@Param('id') id: string) {
+    await this.bannerService.deleteBanner(+id);
+    return this.successResponse({});
   }
 }
