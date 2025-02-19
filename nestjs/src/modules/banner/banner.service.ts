@@ -7,6 +7,8 @@ import { StorageService } from '../storage/storage.service';
 import { PaginationDto } from '../../common/dto/pagination.dto';
 import { plainToInstance } from 'class-transformer';
 import { ListBannerDto } from './dtos/list-banner.dto';
+import { AppException } from '../../common/exceptions/app.exception';
+import { ErrorCodes } from '../../common/errors/error-code.constant';
 
 @Injectable()
 export class BannerService {
@@ -37,5 +39,19 @@ export class BannerService {
       .take(pagination.pageSize)
       .getManyAndCount();
     return [plainToInstance(ListBannerDto, listBanner), total];
+  }
+
+  async deleteBanner(id: number): Promise<void> {
+    const banner: BannerEntity | undefined = await this.bannerRepo.findOne({
+      where: {
+        id: id,
+      },
+    });
+
+    if (!banner) {
+      throw new AppException(ErrorCodes.FORBIDDEN);
+    }
+
+    await banner.remove();
   }
 }

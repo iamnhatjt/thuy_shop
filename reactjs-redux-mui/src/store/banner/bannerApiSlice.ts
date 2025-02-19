@@ -35,6 +35,15 @@ export const bannerApiSlice = createApi({
         body: banner,
       }),
     }),
+    deleteBanner: builder.mutation({
+      query: (id) => ({
+        url: Endpoint.BANNER,
+        method: "DELETE",
+        body: {
+          id: id,
+        },
+      }),
+    }),
   }),
 });
 
@@ -42,4 +51,5 @@ export const {
   useGetListBannersQuery,
   useGetListBannerPaginationQuery,
   useAddBannerMutation,
+  useDeleteBannerMutation,
 } = bannerApiSlice;
