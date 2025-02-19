@@ -7,6 +7,7 @@ import {
 } from "./reducers";
 import {
   useAddBannerMutation,
+  useDeleteBannerMutation,
   useGetListBannerPaginationQuery,
 } from "./bannerApiSlice";
 import { shallowEqual } from "react-redux";
@@ -21,6 +22,8 @@ export const useAdminBanner = () => {
   const dispath = useAppDispatch();
 
   const [addBanner] = useAddBannerMutation();
+  const [deleteBanner, { isLoading: deleteLoading }] =
+    useDeleteBannerMutation();
   const {
     data: bannerResPagination,
     isLoading,
@@ -35,7 +38,7 @@ export const useAdminBanner = () => {
         refetch();
       } catch (e) {}
     },
-    [dispath],
+    [dispath, refetch, addBanner],
   );
 
   const onToggleOpenBanner = useCallback(
@@ -52,6 +55,16 @@ export const useAdminBanner = () => {
     [dispath],
   );
 
+  const onDeleteBanner = useCallback(
+    async (id: number) => {
+      try {
+        await deleteBanner(id);
+        refetch();
+      } catch (e) {}
+    },
+    [dispath, deleteBanner, refetch],
+  );
+
   return {
     isOpenAddingPopup,
     onAddingBanner,
@@ -59,5 +72,6 @@ export const useAdminBanner = () => {
     bannerResPagination,
     isLoading,
     onChangePagination,
+    onDeleteBanner,
   };
 };

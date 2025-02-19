@@ -5,13 +5,22 @@ import TableCustom, {
 } from "../../../../layouts/sharedComponents/TableCustom";
 import { useAdminBanner } from "../../../../store/banner/selectors";
 import { BannerDataInterface } from "../../../../store/banner/reducers";
-import { Typography } from "@mui/material";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Typography,
+} from "@mui/material";
 import { formatDate } from "../../../../utils";
 import Iconify from "../../../../layouts/sharedComponents/Iconify";
 
 const BannerTable: React.FC = () => {
-  const { bannerResPagination, isLoading, onChangePagination } =
+  const { bannerResPagination, isLoading, onChangePagination, onDeleteBanner } =
     useAdminBanner();
+
+  const [idDelete, setIdDelete] = React.useState<number | null>(null);
 
   const columns: ColumnTableType[] = bannerResPagination && [
     {
@@ -64,7 +73,11 @@ const BannerTable: React.FC = () => {
       columnName: "",
       fieldName: "",
       customDisplay: (data) => (
-        <Iconify icon="majesticons:delete-bin" color="red" />
+        <Iconify
+          icon="majesticons:delete-bin"
+          color="red"
+          onClick={() => onDeleteBanner(data?.id)}
+        />
       ),
     },
   ];
@@ -86,6 +99,25 @@ const BannerTable: React.FC = () => {
           })
         }
       />
+      {/*Delete dialog*/}
+      <Dialog open={idDelete === null} onClose={() => setIdDelete(null)}>
+        <DialogTitle title={"Delete Banner"} />
+        <DialogContent content={"This action cannot revert !"} />
+        <DialogActions>
+          <Button variant="text">Cancel</Button>
+          <Button
+            variant="contained"
+            color="error"
+            onClick={() => {
+              if (!!idDelete) {
+                onDeleteBanner(idDelete).then(() => setIdDelete(null));
+              }
+            }}
+          >
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 };
