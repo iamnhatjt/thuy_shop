@@ -76,7 +76,7 @@ const BannerTable: React.FC = () => {
         <Iconify
           icon="majesticons:delete-bin"
           color="red"
-          onClick={() => onDeleteBanner(data?.id)}
+          onClick={() => setIdDelete(data?.id)}
         />
       ),
     },
@@ -100,9 +100,9 @@ const BannerTable: React.FC = () => {
         }
       />
       {/*Delete dialog*/}
-      <Dialog open={idDelete === null} onClose={() => setIdDelete(null)}>
-        <DialogTitle title={"Delete Banner"} />
-        <DialogContent content={"This action cannot revert !"} />
+      <Dialog open={!!idDelete} onClose={() => setIdDelete(null)}>
+        <DialogTitle> Delete Banner</DialogTitle>
+        <DialogContent>This action cannot revert !</DialogContent>
         <DialogActions>
           <Button variant="text">Cancel</Button>
           <Button
