@@ -37,11 +37,8 @@ export const bannerApiSlice = createApi({
     }),
     deleteBanner: builder.mutation({
       query: (id) => ({
-        url: Endpoint.BANNER,
+        url: `${Endpoint.BANNER}/${id}`,
         method: "DELETE",
-        body: {
-          id: id,
-        },
       }),
     }),
   }),
