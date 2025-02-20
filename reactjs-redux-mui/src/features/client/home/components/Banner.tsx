@@ -2,13 +2,13 @@ import React, { useState } from "react";
 import { Box, IconButton } from "@mui/material";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import { ISlide, useGetListBannersQuery } from "store/banner/bannerApiSlice";
+import { useGetListBannersQuery } from "store/banner/bannerApiSlice";
 import Loading from "../../../../layouts/sharedComponents/Loading";
 import { IResponsePagination } from "../../../../constant/type";
 
 const Banner: React.FC = () => {
   const { data, isFetching } = useGetListBannersQuery(undefined);
-  const listSlides: IResponsePagination<ISlide[]> = data;
+  const listSlides = data;
   const [activeIndex, setActiveIndex] = useState(0);
 
   const handleNext = () => {
@@ -41,26 +41,26 @@ const Banner: React.FC = () => {
           transform: `translateX(-${activeIndex * 100}%)`,
         }}
       >
-        {/*{listSlides.data?.map((slide: ISlide, index: number) => (*/}
-        {/*  <Box*/}
-        {/*    key={index}*/}
-        {/*    sx={{*/}
-        {/*      minWidth: "100%",*/}
-        {/*      height: "100%",*/}
-        {/*      display: "flex",*/}
-        {/*      alignItems: "center",*/}
-        {/*      justifyContent: "center",*/}
-        {/*      backgroundPosition: "center",*/}
-        {/*    }}*/}
-        {/*  >*/}
-        {/*    <img*/}
-        {/*      src={slide.url}*/}
-        {/*      alt={slide.fileName}*/}
-        {/*      loading="lazy"*/}
-        {/*      style={{ minWidth: "100%", height: "30vh", objectFit: "cover" }}*/}
-        {/*    />*/}
-        {/*  </Box>*/}
-        {/*))}*/}
+        {listSlides.data?.map((slide: any, index: number) => (
+          <Box
+            key={index}
+            sx={{
+              minWidth: "100%",
+              height: "100%",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              backgroundPosition: "center",
+            }}
+          >
+            <img
+              src={slide.url}
+              alt={slide.fileName}
+              loading="lazy"
+              style={{ minWidth: "100%", height: "30vh", objectFit: "cover" }}
+            />
+          </Box>
+        ))}
       </Box>
 
       {/* Navigation Arrows */}

@@ -2,11 +2,6 @@ import { createApi } from "@reduxjs/toolkit/query/react";
 import { Endpoint } from "constant/endpoint";
 import customFetchBase from "store/customFetchBase";
 
-export interface ISlide {
-  fileName: string;
-  url: string;
-}
-
 export const bannerApiSlice = createApi({
   reducerPath: "bannerApi",
   baseQuery: customFetchBase,
