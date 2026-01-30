@@ -27,7 +27,6 @@ export class ProductEntity extends CommonEntity {
 
   @OneToMany(() => ProductImageEntity, (image) => image.product, {
     onDelete: 'CASCADE',
-    eager: true,
   })
   images: ProductImageEntity[];
 }
