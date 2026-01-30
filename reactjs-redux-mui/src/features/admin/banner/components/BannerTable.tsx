@@ -89,9 +89,15 @@ const BannerTable: React.FC = () => {
   return (
     <>
       <TableCustom
-        columns={columns}
-        rows={bannerResPagination.data}
-        pagination={bannerResPagination.pagination}
+        columns={columns || []}
+        rows={bannerResPagination?.data || []}
+        pagination={
+          bannerResPagination?.pagination || {
+            pageNum: 1,
+            pageSize: 10,
+            totalCount: 0,
+          }
+        }
         onChangePageNumber={(pageNum: number) =>
           onChangePagination({
             pageNum: pageNum,
