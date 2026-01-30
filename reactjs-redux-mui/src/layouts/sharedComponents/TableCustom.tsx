@@ -50,10 +50,10 @@ const TableCustom: React.FC<TableCustomProps> = ({
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((data: any, key: number) => (
-              <TableRow key={key}>
-                {columns.map((column: ColumnTableType, index: number) => (
-                  <TableCell key={index} sx={column.sxData} align="center">
+            {rows.map((data: any, index: number) => (
+              <TableRow key={data?.id || index}>
+                {columns.map((column: ColumnTableType, colIndex: number) => (
+                  <TableCell key={colIndex} sx={column.sxData} align="center">
                     {column?.customDisplay ? (
                       column.customDisplay(data)
                     ) : (
