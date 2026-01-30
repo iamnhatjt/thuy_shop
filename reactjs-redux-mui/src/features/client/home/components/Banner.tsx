@@ -43,7 +43,7 @@ const Banner: React.FC = () => {
       >
         {listSlides.data?.map((slide: any, index: number) => (
           <Box
-            key={index}
+            key={slide.id}
             sx={{
               minWidth: "100%",
               height: "100%",
