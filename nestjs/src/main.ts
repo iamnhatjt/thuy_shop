@@ -4,6 +4,7 @@ import { LoggingInterceptor } from './common/interceptors/logging.interceptor';
 import { setupSwagger } from './config/swagger.config';
 import { ConfigService } from '@nestjs/config';
 import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
+import compression from 'compression';
 import { appToken } from './config/app.config';
 import 'reflect-metadata';
 
@@ -11,6 +12,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     cors: true,
   });
+  app.use(compression());
   const configService = app.get(ConfigService);
   app.useGlobalInterceptors(
     new LoggingInterceptor(),
