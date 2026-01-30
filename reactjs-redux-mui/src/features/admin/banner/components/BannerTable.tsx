@@ -26,9 +26,11 @@ const BannerTable: React.FC = () => {
     {
       columnName: "",
       fieldName: "",
-      customDisplay: (data) => (
+      customDisplay: (_data, index) => (
         <Typography variant="subtitle2">
-          {bannerResPagination?.data?.indexOf(data) + 1}
+          {typeof index === "number"
+            ? index + 1
+            : bannerResPagination?.data?.indexOf(_data) + 1}
         </Typography>
       ),
     },
