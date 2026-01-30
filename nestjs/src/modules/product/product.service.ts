@@ -41,14 +41,19 @@ export class ProductService {
     const newProduct = ProductEntity.create({
       ...dto,
     });
-    for (const image of listImage) {
+    const uploadPromises = listImage.map(async (image) => {
       const url = `product/${generateUUID(14)}`;
       await this.storageService.uploadFile(image.buffer, url, image.mimetype);
       const newImage = ProductImageEntity.create({
         url,
       });
-      newProduct.images.push(newImage);
+      return newImage;
+    });
+    const newImages = await Promise.all(uploadPromises);
+    if (!newProduct.images) {
+      newProduct.images = [];
     }
+    newProduct.images.push(...newImages);
     await newProduct.save();
     return newProduct;
   }
