@@ -21,6 +21,15 @@ export class ProductService {
   ): Promise<[ProductEntity[], number]> {
     const queryBuilder = this.productRepo
       .createQueryBuilder('product')
+      .select([
+        'product.id',
+        'product.title',
+        'product.subtitle',
+        'product.view',
+        'product.amount',
+        'product.createdAt',
+        'product.updatedAt',
+      ])
       .orderBy('product.createdAt', 'DESC');
 
     return queryBuilder
