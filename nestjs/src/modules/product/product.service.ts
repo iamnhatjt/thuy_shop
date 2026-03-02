@@ -21,6 +21,7 @@ export class ProductService {
   ): Promise<[ProductEntity[], number]> {
     const queryBuilder = this.productRepo
       .createQueryBuilder('product')
+      .leftJoinAndSelect('product.images', 'images')
       .orderBy('product.createdAt', 'DESC');
 
     return queryBuilder
@@ -34,6 +35,7 @@ export class ProductService {
       where: {
         id: id,
       },
+      relations: ['images'],
     });
   }
 
