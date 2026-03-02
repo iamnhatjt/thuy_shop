@@ -26,7 +26,7 @@ export interface ColumnTableType {
   columnName: string;
   fieldName: string;
   sx?: SxProps;
-  customDisplay?: (data: any) => JSX.Element;
+  customDisplay?: (data: any, index?: number) => JSX.Element;
   sxData?: SxProps;
 }
 
@@ -55,7 +55,7 @@ const TableCustom: React.FC<TableCustomProps> = ({
                 {columns.map((column: ColumnTableType, colIndex: number) => (
                   <TableCell key={colIndex} sx={column.sxData} align="center">
                     {column?.customDisplay ? (
-                      column.customDisplay(data)
+                      column.customDisplay(data, index)
                     ) : (
                       <Typography variant="subtitle2">
                         {data[column.fieldName]}
