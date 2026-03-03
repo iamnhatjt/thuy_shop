@@ -1,9 +1,11 @@
 import { configureStore, Middleware } from "@reduxjs/toolkit";
 import appReducer from "./app/reducers";
 import bannerSlice from "./banner/reducers";
+import categorySlice from "./category/reducers";
 import { bannerApiSlice } from "./banner/bannerApiSlice";
+import { categoryApiSlice } from "./category/categoryApiSlice";
 
-const listApiSlices = [bannerApiSlice];
+const listApiSlices = [bannerApiSlice, categoryApiSlice];
 
 const apiReducer = listApiSlices.reduce((acc, slice) => {
   return {
@@ -20,6 +22,7 @@ export const store = configureStore({
   reducer: {
     app: appReducer,
     banner: bannerSlice,
+    category: categorySlice,
     ...apiReducer,
   },
   middleware: (getDefaultMiddleware) =>

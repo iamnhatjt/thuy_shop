@@ -12,6 +12,7 @@ import {
   Stack,
   Toolbar,
   Typography,
+  Badge,
 } from "@mui/material";
 import {
   LocationOn,
@@ -19,235 +20,212 @@ import {
   Search,
   ShoppingCart,
   Star,
+  Bed,
 } from "@mui/icons-material";
-import Logo from "../../sharedComponents/Logo";
 import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import { Link } from "react-router-dom";
 import useBreakpoint from "../../../hooks/useBreakpoint";
 import { Icon } from "@iconify/react";
-
-interface NavItem {
-  title: string;
-  url: string;
-  subtitle?: { title: string; url: string }[];
-}
-
-const listNavBar: NavItem[] = [
-  {
-    title: "Chăn Ga Gối đệm",
-    url: "/chan-ga-goi-dem",
-    subtitle: [
-      { title: "Chăn", url: "/chan-ga-goi-dem/chan" },
-      {
-        title: "Ga",
-        url: "/chan-ga-goi-dem/ga",
-      },
-      { title: "Gối", url: "/chan-ga-goi-dem/goi" },
-      { title: "Đệm", url: "/chan-ga-goi-dem/dem" },
-    ],
-  },
-  {
-    title: "Thực phẩm chay",
-    url: "/thuc-pham-chay",
-    subtitle: [
-      { title: "Nấm", url: "/thuc-pham-chay/nam" },
-      {
-        title: "Giò chay",
-        url: "/thuc-pham-chay/gio-chay",
-      },
-      { title: "Chả ngộ chay", url: "/thuc-pham-chay/cha-ngo-chay" },
-      { title: "Miến", url: "/thuc-pham-chay/mien" },
-    ],
-  },
-  {
-    title: "Đồ nhựa, đồ gia dụng",
-    url: "/do-nhua-do-gia-dung",
-    subtitle: [
-      { title: "Chậu", url: "/do-nhua-do-gia-dung/chau" },
-      {
-        title: "Thau",
-        url: "/do-nhua-do-gia-dung/thau",
-      },
-      { title: "Gáo", url: "/do-nhua-do-gia-dung/gao" },
-    ],
-  },
-  {
-    title: "Đồ thủy tinh",
-    url: "/do-thuy-tinh",
-    subtitle: [
-      { title: "Ấm chén", url: "/do-thuy-tinh/am-chen" },
-      { title: "Bình", url: "/do-thuy-tinh/binh" },
-    ],
-  },
-  { title: "Thông Khuyển mãi", url: "/thong-tin-khuyen-mai" },
-  { title: "Bài viết chia sẻ", url: "/bai-viet" },
-];
+import { useNavbarCategories } from "../../../store/category/selectors";
 
 function Header() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const { isMdSmaller } = useBreakpoint();
+  const { navItems } = useNavbarCategories();
 
   const toggleDrawer = (open: boolean) => (event: MouseEvent) => {
     setDrawerOpen(open);
   };
+  
   return (
-    <AppBar position="static" color="transparent" elevation={0}>
-      <Toolbar>
-        {isMdSmaller ? (
-          <>
-            <Stack direction="row" justifyContent="space-between" width="100%">
-              <IconButton color="primary" onClick={toggleDrawer(true)}>
-                <MenuIcon />
-              </IconButton>
-              <IconButton color="primary" onClick={toggleDrawer(true)}>
-                <SearchIcon />
-              </IconButton>
-              <Logo />
-              <IconButton color="primary">
-                <Person />
-              </IconButton>
-              <IconButton color="primary">
-                <ShoppingCart />
-              </IconButton>
-            </Stack>
+    <AppBar 
+      position="sticky" 
+      color="inherit" 
+      elevation={0}
+      sx={{ 
+        borderBottom: "1px solid #e7ebf3",
+        backgroundColor: "rgba(255, 255, 255, 0.95)",
+        backdropFilter: "blur(12px)",
+        px: { xs: 1, md: 3 },
+        pt: { xs: 1, md: 1.5 },
+        pb: { xs: 1, md: 0 },
+      }}
+    >
+      <Toolbar disableGutters sx={{ flexDirection: "column", gap: 2, mb: { md: 1 } }}>
+        {/* Top Header Row */}
+        <Stack 
+          direction="row" 
+          justifyContent="space-between" 
+          alignItems="center"
+          width="100%" 
+          maxWidth="1440px"
+          mx="auto"
+          gap={{ xs: 1, md: 4 }}
+        >
+          {isMdSmaller && (
+            <IconButton color="primary" onClick={toggleDrawer(true)}>
+              <MenuIcon />
+            </IconButton>
+          )}
 
-            <Drawer
-              anchor="left"
-              open={drawerOpen}
-              onClose={toggleDrawer(false)}
+          {/* Premium Logo Section */}
+          <Box display="flex" alignItems="center" gap={1.5} component={Link} to="/" sx={{ textDecoration: 'none', color: '#135bec' }}>
+            <Box 
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                borderRadius: '8px',
+                bgcolor: 'rgba(19, 91, 236, 0.1)',
+                p: { xs: 0.5, md: 1 },
+              }}
             >
-              <Stack direction="row" justifyContent="center">
-                <Logo />
-              </Stack>
-              <List>
-                {listNavBar.map((navItem) => (
-                  <React.Fragment key={navItem.url}>
-                    <ListItem component={Link} to={navItem.url}>
-                      <ListItemText primary={navItem.title} />
-                    </ListItem>
-                    {navItem.subtitle && (
-                      <List component="div" disablePadding>
-                        {navItem.subtitle.map((subItem) => (
-                          <ListItem
-                            component={Link}
-                            to={subItem.url}
-                            key={subItem.url}
-                            sx={{ pl: 4 }}
-                          >
-                            <ListItemText primary={subItem.title} />
-                          </ListItem>
-                        ))}
-                      </List>
-                    )}
-                    <Divider color="primary" />
-                  </React.Fragment>
-                ))}
-              </List>
-            </Drawer>
-          </>
-        ) : (
-          <Stack width="100%" direction="row" justifyContent="space-between">
-            <Box display="flex" alignItems="center">
-              <IconButton color="primary" component="a" href="#">
-                <LocationOn />
-                <Typography variant="body1" sx={{ ml: 0.5 }}>
+              <Bed sx={{ fontSize: { xs: 24, md: 32 } }} />
+            </Box>
+            <Typography 
+              variant="h6" 
+              fontWeight={800} 
+              sx={{ 
+                display: { xs: 'block', sm: 'block' },
+                color: '#0d121b',
+                letterSpacing: '-0.5px',
+                fontSize: { xs: '18px', md: '22px' }
+              }}
+            >
+              Thuy<span style={{ color: '#135bec' }}>Shop</span>
+            </Typography>
+          </Box>
+
+          {/* Center Search Bar (Desktop) */}
+          {!isMdSmaller && (
+            <Box sx={{ flex: 1, maxWidth: '600px' }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  backgroundColor: "#f8f9fc",
+                  borderRadius: "12px",
+                  paddingLeft: 2,
+                  paddingRight: 1,
+                  border: '1px solid #e7ebf3',
+                  transition: 'all 0.2s',
+                  '&:focus-within': {
+                    borderColor: '#135bec',
+                    boxShadow: '0 0 0 2px rgba(19, 91, 236, 0.1)'
+                  }
+                }}
+              >
+                <Icon icon="material-symbols:search" color="#4c669a" fontSize={24} style={{ marginRight: 8 }} />
+                <InputBase 
+                  placeholder="Tìm kiếm sản phẩm..." 
+                  fullWidth 
+                  sx={{ py: 1.5, fontSize: '15px' }}
+                />
+              </Box>
+            </Box>
+          )}
+
+          {/* Right Icons */}
+          <Stack direction="row" alignItems="center" gap={{ xs: 0.5, md: 2 }}>
+            {!isMdSmaller && (
+              <IconButton 
+                component="a" 
+                href="#"
+                sx={{ 
+                  borderRadius: '12px', px: 2, py: 1, gap: 1,
+                  '&:hover': { bgcolor: '#f8f9fc' }
+                }}
+              >
+                <LocationOn sx={{ color: '#0d121b' }} />
+                <Typography variant="body2" fontWeight={600} color="#0d121b">
                   Cửa hàng
                 </Typography>
               </IconButton>
-              <IconButton color="primary" component="a" href="#">
-                <Star />
-                <Typography variant="body1" sx={{ ml: 0.5 }}>
-                  Quyền lợi thành viên
-                </Typography>
-              </IconButton>
-            </Box>
-
-            <Logo
-              style={{
-                height: "40px",
+            )}
+            
+            <IconButton 
+              component="a" 
+              href="#"
+              sx={{ 
+                borderRadius: '12px', px: { xs: 1, md: 2 }, py: 1, gap: 1,
+                '&:hover': { bgcolor: '#f8f9fc' }
               }}
-            />
-
-            <Box display="flex" alignItems="center">
-              <IconButton color="primary" component="a" href="#">
-                <Person />
-                <Typography variant="body1" sx={{ ml: 0.5 }}>
+            >
+              <Person sx={{ color: '#0d121b' }} />
+              {!isMdSmaller && (
+                <Typography variant="body2" fontWeight={600} color="#0d121b">
                   Tài khoản
                 </Typography>
-              </IconButton>
-              <IconButton color="primary" component="a" href="#">
+              )}
+            </IconButton>
+
+            <IconButton 
+              component="a" 
+              href="#"
+              sx={{ 
+                bgcolor: '#135bec',
+                color: 'white',
+                borderRadius: '12px',
+                px: { xs: 1, md: 2.5 }, 
+                py: { xs: 1, md: 1.2 }, 
+                gap: 1,
+                transition: 'all 0.2s',
+                '&:hover': { bgcolor: '#0e44b3' }
+              }}
+            >
+              <Badge badgeContent={2} color="error" sx={{ '& .MuiBadge-badge': { fontWeight: 'bold' } }}>
                 <ShoppingCart />
-                <Typography variant="body1" sx={{ ml: 0.5 }}>
+              </Badge>
+              {!isMdSmaller && (
+                <Typography variant="body2" fontWeight={700}>
                   Giỏ hàng
                 </Typography>
-              </IconButton>
-            </Box>
+              )}
+            </IconButton>
           </Stack>
-        )}
-      </Toolbar>
-      <Divider
-        sx={{
-          margin: "0px 20px",
-        }}
-      />
+        </Stack>
 
-      {/* !! For small screen */}
-      {!isMdSmaller && (
-        <Stack
-          direction="row"
-          justifyContent="space-between"
-          width="auto"
-          alignItems="center"
-          mx="20px"
-          my="10px"
-        >
+        {/* Desktop Navigation Links */}
+        {!isMdSmaller && (
           <Stack
             direction="row"
-            justifyContent="space-evenly"
+            justifyContent="center"
             className="header-nav-large"
             width="100%"
+            maxWidth="1440px"
+            mx="auto"
+            sx={{ pt: 1 }}
           >
-            {listNavBar.map((item) => (
-              <div className="header-nav-title">
+            {navItems.map((item) => (
+              <div className="header-nav-title" key={item.url}>
                 <Link
-                  style={{
-                    textDecoration: "none",
-                    color: "inherit",
-                  }}
+                  style={{ textDecoration: "none", color: "inherit" }}
                   to={item.url}
                 >
-                  <Typography variant="body1" fontWeight={700} color="#2d2e7f">
+                  <Typography 
+                    variant="body2" 
+                    fontWeight={600} 
+                    sx={{ color: '#4c669a', '&:hover': { color: '#135bec' } }}
+                  >
                     {item.title}
                   </Typography>
                 </Link>
                 {!!item.subtitle && (
                   <Icon
                     icon="gridicons:dropdown"
-                    style={{
-                      height: "100%",
-                      fontWeight: 500,
-                      fontSize: "25px",
-                    }}
-                  ></Icon>
+                    style={{ fontWeight: 500, fontSize: "20px", color: '#4c669a' }}
+                  />
                 )}
                 {!!item.subtitle && (
-                  <ul className="header-nav-subtitle">
+                  <ul className="header-nav-subtitle" style={{ borderRadius: '12px', boxShadow: '0 10px 40px rgba(0,0,0,0.08)', border: '1px solid #e7ebf3' }}>
                     {item.subtitle.map((subItem) => (
-                      <li>
+                      <li key={subItem.url}>
                         <Link
                           to={subItem.url}
-                          style={{
-                            textDecoration: "none",
-                            color: "inherit",
-                          }}
+                          style={{ textDecoration: "none", color: "inherit" }}
                         >
-                          <Typography
-                            variant="body1"
-                            sx={{
-                              padding: "8px 12px",
-                            }}
-                          >
+                          <Typography variant="body2" sx={{ padding: "10px 16px", fontWeight: 500 }}>
                             {subItem.title}
                           </Typography>
                         </Link>
@@ -258,28 +236,63 @@ function Header() {
               </div>
             ))}
           </Stack>
-          <Stack>
-            <Box
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                backgroundColor: "#f3f3ff",
-                borderRadius: "30px",
-                paddingLeft: 2,
-                paddingRight: 1,
-                width: "400px",
-              }}
-            >
-              <InputBase placeholder="Tìm kiếm nhanh" fullWidth />
-              <IconButton type="submit" sx={{ color: "#2C2A8A" }}>
-                <Search />
-              </IconButton>
-            </Box>
-          </Stack>
-        </Stack>
-      )}
+        )}
+
+      </Toolbar>
+
+      {/* Mobile Drawer */}
+      <Drawer
+        anchor="left"
+        open={drawerOpen}
+        onClose={toggleDrawer(false)}
+        PaperProps={{ sx: { width: '280px', p: 2 } }}
+      >
+        <Box display="flex" alignItems="center" gap={1.5} mb={3}>
+          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '8px', bgcolor: 'rgba(19, 91, 236, 0.1)', p: 0.5 }}>
+            <Bed sx={{ fontSize: 24, color: '#135bec' }} />
+          </Box>
+          <Typography variant="h6" fontWeight={800} sx={{ color: '#0d121b', letterSpacing: '-0.5px' }}>
+            Thuy<span style={{ color: '#135bec' }}>Shop</span>
+          </Typography>
+        </Box>
+        
+        {/* Mobile Search */}
+        <Box
+          sx={{ display: "flex", alignItems: "center", backgroundColor: "#f8f9fc", borderRadius: "12px", px: 2, mb: 3, border: '1px solid #e7ebf3' }}
+        >
+          <Icon icon="material-symbols:search" color="#4c669a" fontSize={20} style={{ marginRight: 8 }} />
+          <InputBase placeholder="Tìm kiếm..." fullWidth sx={{ py: 1 }} />
+        </Box>
+
+        <List disablePadding>
+          {navItems.map((navItem) => (
+            <React.Fragment key={navItem.url}>
+              <ListItem component={Link} to={navItem.url} sx={{ px: 0, py: 1.5 }}>
+                <ListItemText 
+                  primary={navItem.title} 
+                  primaryTypographyProps={{ fontWeight: 600, color: '#0d121b' }} 
+                />
+              </ListItem>
+              {navItem.subtitle && (
+                <List component="div" disablePadding sx={{ bgcolor: '#f8f9fc', borderRadius: '8px', mb: 1 }}>
+                  {navItem.subtitle.map((subItem) => (
+                    <ListItem component={Link} to={subItem.url} key={subItem.url} sx={{ pl: 2, py: 1 }}>
+                      <ListItemText 
+                        primary={subItem.title} 
+                        primaryTypographyProps={{ fontSize: '14px', color: '#4c669a' }} 
+                      />
+                    </ListItem>
+                  ))}
+                </List>
+              )}
+              <Divider sx={{ borderColor: '#e7ebf3' }} />
+            </React.Fragment>
+          ))}
+        </List>
+      </Drawer>
     </AppBar>
   );
 }
 
 export default React.memo(Header);
+

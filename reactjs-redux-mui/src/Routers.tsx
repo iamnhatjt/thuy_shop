@@ -9,11 +9,13 @@ import Home from "./features/client/home";
 import AdminLayout from "./layouts/AdminLayout";
 import {
   ADMIN_BANNER_PATH,
+  ADMIN_CATEGORY_PATH,
   ADMIN_PATH,
   HOME_PATH,
   SIGNIN_PATH,
 } from "./constant/paths";
 import AdminBanner from "./features/admin/banner";
+import AdminCategory from "./features/admin/category";
 
 const listRouterPaths: RouteObject[] = [
   // with no wrapper
@@ -40,6 +42,10 @@ const listRouterPaths: RouteObject[] = [
       {
         path: ADMIN_BANNER_PATH,
         element: <AdminBanner />,
+      },
+      {
+        path: ADMIN_CATEGORY_PATH,
+        element: <AdminCategory />,
       },
     ],
   },

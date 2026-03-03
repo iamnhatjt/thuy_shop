@@ -44,6 +44,7 @@ code {
   .header-nav-title:hover {
     .header-nav-subtitle {
       display: initial;
+      z-index: 50;
       list-style: none;
       margin: 0;
       padding: 0;

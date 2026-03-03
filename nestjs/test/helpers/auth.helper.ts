@@ -72,3 +72,13 @@ export function authDelete(
     .delete(url)
     .set('Authorization', `Bearer ${token}`);
 }
+
+export function authPut(
+  app: INestApplication,
+  url: string,
+  token: string,
+): request.Test {
+  return request(app.getHttpServer())
+    .put(url)
+    .set('Authorization', `Bearer ${token}`);
+}

@@ -9,6 +9,7 @@ import { StorageModule } from './modules/storage/storage.module';
 import { BannerModule } from './modules/banner/banner.module';
 import { ShoppingCardModule } from './modules/shopping-card/shopping-card.module';
 import { ProductModule } from './modules/product/product.module';
+import { CategoryModule } from './modules/category/category.module';
 import { AppService } from './app.service';
 
 @Module({
@@ -28,6 +29,7 @@ import { AppService } from './app.service';
     BannerModule,
     ShoppingCardModule,
     ProductModule,
+    CategoryModule,
   ],
   providers: [AppService],
 })

@@ -26,7 +26,7 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
       database: process.env['MYSQL_DATABASE'],
       entities: [__dirname + '../../../**/entities/*.entity{.ts,.js}'],
       migrations: [__dirname + '../../migrations/*{.ts,.js}'],
-      synchronize: process.env.DB_SYNCHRONIZE === 'true',
+      synchronize: false,
       logging: process.env.DB_LOGGING === 'true',
       migrationsTransactionMode: 'each',
       logger:
@@ -42,8 +42,8 @@ export default new DataSource({
   username: 'root',
   password: '123456a@',
   database: 'BookSharing',
-  entities: [__dirname + '../../../**/entities/*.entity{.ts,.js}'],
-  migrations: [__dirname + '../../migrations/*{.ts,.js}'],
+  entities: [__dirname + '/../../**/entities/*.entity{.ts,.js}'],
+  migrations: [__dirname + '/../../migrations/*{.ts,.js}'],
   synchronize: false,
   migrationsTransactionMode: 'each',
 });
