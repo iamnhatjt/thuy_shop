@@ -1,4 +1,5 @@
 export const Endpoint = {
+  AUTH_LOGIN: "/auth/login",
   REFRESH_TOKEN: "",
   GET_PROFILE: "/GET_PROFILE",
   BANNER: "/banner",

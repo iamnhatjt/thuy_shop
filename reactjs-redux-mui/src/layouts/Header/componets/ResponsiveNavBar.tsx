@@ -50,9 +50,10 @@ function Header() {
         px: { xs: 1, md: 3 },
         pt: { xs: 1, md: 1.5 },
         pb: { xs: 1, md: 0 },
+        overflow: 'visible',
       }}
     >
-      <Toolbar disableGutters sx={{ flexDirection: "column", gap: 2, mb: { md: 1 } }}>
+      <Toolbar disableGutters sx={{ flexDirection: "column", gap: 2, mb: { md: 1 }, overflow: 'visible' }}>
         {/* Top Header Row */}
         <Stack 
           direction="row" 
@@ -186,59 +187,61 @@ function Header() {
           </Stack>
         </Stack>
 
-        {/* Desktop Navigation Links */}
-        {!isMdSmaller && (
-          <Stack
-            direction="row"
-            justifyContent="center"
-            className="header-nav-large"
-            width="100%"
-            maxWidth="1440px"
-            mx="auto"
-            sx={{ pt: 1 }}
-          >
-            {navItems.map((item) => (
-              <div className="header-nav-title" key={item.url}>
-                <Link
-                  style={{ textDecoration: "none", color: "inherit" }}
-                  to={item.url}
-                >
-                  <Typography 
-                    variant="body2" 
-                    fontWeight={600} 
-                    sx={{ color: '#4c669a', '&:hover': { color: '#135bec' } }}
-                  >
-                    {item.title}
-                  </Typography>
-                </Link>
-                {!!item.subtitle && (
-                  <Icon
-                    icon="gridicons:dropdown"
-                    style={{ fontWeight: 500, fontSize: "20px", color: '#4c669a' }}
-                  />
-                )}
-                {!!item.subtitle && (
-                  <ul className="header-nav-subtitle" style={{ borderRadius: '12px', boxShadow: '0 10px 40px rgba(0,0,0,0.08)', border: '1px solid #e7ebf3' }}>
-                    {item.subtitle.map((subItem) => (
-                      <li key={subItem.url}>
-                        <Link
-                          to={subItem.url}
-                          style={{ textDecoration: "none", color: "inherit" }}
-                        >
-                          <Typography variant="body2" sx={{ padding: "10px 16px", fontWeight: 500 }}>
-                            {subItem.title}
-                          </Typography>
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </div>
-            ))}
-          </Stack>
-        )}
-
       </Toolbar>
+
+      {/* Desktop Navigation Links */}
+      {!isMdSmaller && (
+        <Box
+          className="header-nav-large"
+          sx={{ 
+            display: 'flex',
+            justifyContent: 'center',
+            width: '100%',
+            maxWidth: '1440px',
+            mx: 'auto',
+            position: 'relative',
+            overflow: 'visible',
+          }}
+        >
+          {navItems.map((item) => (
+            <div className="header-nav-title" key={item.url}>
+              <Link
+                style={{ textDecoration: "none", color: "inherit" }}
+                to={item.url}
+              >
+                <Typography 
+                  variant="body2" 
+                  fontWeight={600} 
+                  sx={{ 
+                    color: '#4a5568', 
+                    textTransform: 'uppercase',
+                    letterSpacing: '1.5px',
+                    fontSize: '13px',
+                  }}
+                >
+                  {item.title}
+                </Typography>
+              </Link>
+              {!!item.subtitle && (
+                <ul className="header-nav-subtitle">
+                  {item.subtitle.map((subItem) => (
+                    <li key={subItem.url}>
+                      <Link
+                        to={subItem.url}
+                        style={{ textDecoration: "none", color: "inherit" }}
+                      >
+                        <Typography variant="body2" sx={{ padding: "10px 20px", fontWeight: 500, fontSize: '14px' }}>
+                          {subItem.title}
+                        </Typography>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          ))}
+        </Box>
+      )}
 
       {/* Mobile Drawer */}
       <Drawer

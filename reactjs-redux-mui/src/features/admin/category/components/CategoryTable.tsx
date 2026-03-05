@@ -12,10 +12,12 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  IconButton,
+  Stack,
   Typography,
 } from "@mui/material";
+import { Edit, DeleteOutline } from "@mui/icons-material";
 import { formatDate } from "../../../../utils";
-import Iconify from "../../../../layouts/sharedComponents/Iconify";
 
 const CategoryTable: React.FC = () => {
   const {
@@ -30,10 +32,10 @@ const CategoryTable: React.FC = () => {
 
   const columns: ColumnTableType[] = categoryResPagination && [
     {
-      columnName: "",
+      columnName: "#",
       fieldName: "",
       customDisplay: (_data, index) => (
-        <Typography variant="subtitle2">
+        <Typography variant="body2" fontWeight={500} color="#6b7280">
           {typeof index === "number"
             ? index + 1
             : categoryResPagination?.data?.indexOf(_data) + 1}
@@ -43,15 +45,29 @@ const CategoryTable: React.FC = () => {
     {
       columnName: "Title",
       fieldName: "title",
+      customDisplay: (data: CategoryDataInterface) => (
+        <Typography variant="body2" fontWeight={600} color="#0d121b">
+          {data.title}
+        </Typography>
+      ),
     },
     {
-      columnName: "Active",
+      columnName: "Status",
       fieldName: "isActive",
       customDisplay: (data: CategoryDataInterface) => (
         <Chip
           label={data.isActive ? "Active" : "Inactive"}
-          color={data.isActive ? "success" : "default"}
           size="small"
+          sx={{
+            fontWeight: 600,
+            fontSize: "12px",
+            borderRadius: "6px",
+            bgcolor: data.isActive ? "#ecfdf5" : "#fef2f2",
+            color: data.isActive ? "#059669" : "#dc2626",
+            border: data.isActive
+              ? "1px solid #a7f3d0"
+              : "1px solid #fecaca",
+          }}
         />
       ),
     },
@@ -59,36 +75,46 @@ const CategoryTable: React.FC = () => {
       columnName: "Parent",
       fieldName: "parentId",
       customDisplay: (data: CategoryDataInterface) => (
-        <Typography variant="subtitle2">
+        <Typography variant="body2" color="#6b7280">
           {data.parentId ? `#${data.parentId}` : "—"}
         </Typography>
       ),
     },
     {
-      columnName: "Created At",
+      columnName: "Created",
       fieldName: "createdAt",
       customDisplay: (data) => (
-        <Typography variant="subtitle2">
+        <Typography variant="body2" color="#6b7280">
           {formatDate(data?.createdAt)}
         </Typography>
       ),
     },
     {
-      columnName: "",
+      columnName: "Actions",
       fieldName: "",
       customDisplay: (data: CategoryDataInterface) => (
-        <>
-          <Iconify
-            icon="mdi:pencil"
-            color="#2d2e7f"
+        <Stack direction="row" spacing={0.5}>
+          <IconButton
+            size="small"
             onClick={() => onEditCategory(data)}
-          />
-          <Iconify
-            icon="majesticons:delete-bin"
-            color="red"
+            sx={{
+              color: "#135bec",
+              "&:hover": { bgcolor: "#eff6ff" },
+            }}
+          >
+            <Edit fontSize="small" />
+          </IconButton>
+          <IconButton
+            size="small"
             onClick={() => setIdDelete(data?.id)}
-          />
-        </>
+            sx={{
+              color: "#ef4444",
+              "&:hover": { bgcolor: "#fef2f2" },
+            }}
+          >
+            <DeleteOutline fontSize="small" />
+          </IconButton>
+        </Stack>
       ),
     },
   ];
@@ -116,12 +142,31 @@ const CategoryTable: React.FC = () => {
           })
         }
       />
-      {/* Delete dialog */}
-      <Dialog open={!!idDelete} onClose={() => setIdDelete(null)}>
-        <DialogTitle>Delete Category</DialogTitle>
-        <DialogContent>This action cannot be reverted!</DialogContent>
-        <DialogActions>
-          <Button variant="text" onClick={() => setIdDelete(null)}>
+      {/* Delete confirmation dialog */}
+      <Dialog
+        open={!!idDelete}
+        onClose={() => setIdDelete(null)}
+        PaperProps={{
+          sx: { borderRadius: "16px", p: 1 },
+        }}
+      >
+        <DialogTitle sx={{ fontWeight: 700 }}>Delete Category</DialogTitle>
+        <DialogContent>
+          <Typography color="#6b7280">
+            This action cannot be undone. Are you sure you want to delete this
+            category?
+          </Typography>
+        </DialogContent>
+        <DialogActions sx={{ px: 3, pb: 2 }}>
+          <Button
+            variant="outlined"
+            onClick={() => setIdDelete(null)}
+            sx={{
+              borderRadius: "10px",
+              textTransform: "none",
+              fontWeight: 600,
+            }}
+          >
             Cancel
           </Button>
           <Button
@@ -131,6 +176,11 @@ const CategoryTable: React.FC = () => {
               if (!!idDelete) {
                 onDeleteCategory(idDelete).then(() => setIdDelete(null));
               }
+            }}
+            sx={{
+              borderRadius: "10px",
+              textTransform: "none",
+              fontWeight: 600,
             }}
           >
             Delete

@@ -1,28 +1,34 @@
 import React from "react";
+import { Box } from "@mui/material";
 import CategoryTable from "./components/CategoryTable";
-import { Button, Stack, Typography } from "@mui/material";
 import { useAdminCategory } from "../../../store/category/selectors";
 import CategoryFormPopup from "./components/CategoryFormPopup";
+import AdminHeader from "../../../layouts/Header/componets/AdminHeader";
 
 const AdminCategory: React.FC = () => {
   const { onToggleFormPopup } = useAdminCategory();
 
   return (
     <>
-      <Stack
-        direction="row"
-        alignItems="center"
-        justifyContent="space-between"
-        sx={{ px: 3, py: 2 }}
-      >
-        <Typography variant="h5" fontWeight={700} color="primary">
-          Category Management
-        </Typography>
-        <Button variant="contained" onClick={() => onToggleFormPopup(true)}>
-          New Category
-        </Button>
-      </Stack>
-      <CategoryTable />
+      <AdminHeader
+        title="Category Management"
+        subtitle="Manage your product categories and subcategories"
+        searchPlaceholder="Search categories..."
+        actionLabel="Add Category"
+        onAction={() => onToggleFormPopup(true)}
+      />
+      <Box sx={{ p: 3, flex: 1 }}>
+        <Box
+          sx={{
+            bgcolor: "#fff",
+            borderRadius: "16px",
+            border: "1px solid #e7ebf3",
+            overflow: "hidden",
+          }}
+        >
+          <CategoryTable />
+        </Box>
+      </Box>
       <CategoryFormPopup />
     </>
   );

@@ -24,36 +24,66 @@ code {
 
 
 .header-nav-large {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0;
+  border-top: 1px solid #e7ebf3;
+  padding: 0;
 
   .header-nav-title {
     position: relative;
     display: flex;
-
-    .header-nav-subtitle {
-      background-color: white;
-      position: absolute;
-      display: none;
-      color: #2d2e7f;
-
-      ul {
-        list-style-type: none;
-      }
-    }
+    align-items: center;
+    cursor: pointer;
+    padding: 14px 24px;
+    transition: all 0.2s ease;
   }
 
   .header-nav-title:hover {
-    .header-nav-subtitle {
-      display: initial;
-      z-index: 50;
-      list-style: none;
-      margin: 0;
-      padding: 0;
-      background-color: #ffffff;
-      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-      border-radius: 8px;
-      overflow: hidden;
-      top: 25px;
-      width: 150px;
-    }
+    background-color: #f8f9fc;
+  }
+
+  .header-nav-title:hover > a p,
+  .header-nav-title:hover > a span {
+    color: #135bec !important;
+  }
+
+  .header-nav-subtitle {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    display: none;
+    list-style: none;
+    margin: 0;
+    padding: 8px 0;
+    background-color: #ffffff;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+    border: 1px solid #e7ebf3;
+    border-radius: 8px;
+    min-width: 200px;
+    z-index: 100;
+  }
+
+  .header-nav-title:hover .header-nav-subtitle {
+    display: block;
+  }
+
+  .header-nav-subtitle li {
+    transition: background-color 0.15s ease;
+  }
+
+  .header-nav-subtitle li:hover {
+    background-color: #f8f9fc;
+  }
+
+  .header-nav-subtitle li a p {
+    color: #4c669a !important;
+    white-space: nowrap;
+  }
+
+  .header-nav-subtitle li:hover a p {
+    color: #135bec !important;
   }
 }

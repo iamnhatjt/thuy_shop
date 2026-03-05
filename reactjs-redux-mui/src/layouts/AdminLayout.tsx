@@ -1,20 +1,24 @@
-import AdminDrawer from "./Header/componets/AdminDrawer";
-import { Box, Stack } from "@mui/material";
+import AdminDrawer, { SIDEBAR_WIDTH } from "./Header/componets/AdminDrawer";
+import { Box } from "@mui/material";
 import { Outlet } from "react-router-dom";
 
 const AdminLayout = () => {
   return (
-    <Stack direction="row">
+    <Box sx={{ display: "flex", minHeight: "100vh", bgcolor: "#f5f7fb" }}>
       <AdminDrawer />
       <Box
+        component="main"
         sx={{
-          marginLeft: "240px",
-          width: "100%",
+          ml: `${SIDEBAR_WIDTH}px`,
+          width: `calc(100% - ${SIDEBAR_WIDTH}px)`,
+          display: "flex",
+          flexDirection: "column",
+          minHeight: "100vh",
         }}
       >
         <Outlet />
       </Box>
-    </Stack>
+    </Box>
   );
 };
 

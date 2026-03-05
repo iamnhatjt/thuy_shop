@@ -1,7 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { Endpoint } from "../../constant/endpoint";
-import { HttpStatusCode } from "axios";
-import { AN_ERROR_TRY_RELOAD_PAGE } from "../../constant";
+import { API_URL } from "../../constant";
 
 export type SigninData = {
   email: string;
@@ -10,15 +9,23 @@ export type SigninData = {
 
 export const signin = createAsyncThunk(
   "app/signin",
-  async (data: SigninData) => {
+  async (data: SigninData, { rejectWithValue }) => {
     try {
-      const response: any = {};
-      if (response?.status === HttpStatusCode.Ok) {
-        return response.data;
+      const response = await fetch(`${API_URL}${Endpoint.AUTH_LOGIN}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        return rejectWithValue(result?.message || "Login failed");
       }
-      throw AN_ERROR_TRY_RELOAD_PAGE;
+
+      return result.data as { accessToken: string; refreshToken: string };
     } catch (e) {
-      throw e;
+      return rejectWithValue("Network error. Please try again.");
     }
   },
 );
@@ -26,11 +33,7 @@ export const signin = createAsyncThunk(
 export const getProfile = createAsyncThunk("app/getProfile", async () => {
   try {
     const response: any = {};
-    if (response?.status === HttpStatusCode.Ok) {
-      return response;
-    }
-
-    throw AN_ERROR_TRY_RELOAD_PAGE;
+    return response;
   } catch (err) {
     throw err;
   }

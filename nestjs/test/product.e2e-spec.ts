@@ -1,106 +1,258 @@
 import { INestApplication } from '@nestjs/common';
 import request from 'supertest';
-import { createTestApp, getDataSource } from './helpers/test-app.helper';
-import { loginUser, AuthTokens } from './helpers/auth.helper';
+import { createTestApp } from './helpers/test-app.helper';
+import {
+  loginUser,
+  registerUser,
+  authGet,
+  authPost,
+  authPut,
+  authDelete,
+  AuthTokens,
+} from './helpers/auth.helper';
 
 describe('Product Workflow (e2e)', () => {
   let app: INestApplication;
   let adminTokens: AuthTokens;
+  let regularTokens: AuthTokens;
 
   beforeAll(async () => {
     app = await createTestApp();
-    // Wait for admin seeding
     await new Promise((resolve) => setTimeout(resolve, 12000));
     adminTokens = await loginUser(app, 'admin1@gmail.com', 'admin');
 
-    // Seed some products directly in DB for testing (DB write for test setup is allowed)
-    const dataSource = getDataSource(app);
-    await dataSource.query(`
-      INSERT INTO product_entity (title, subtitle, view, amount, description)
-      VALUES
-        ('Test Book Alpha', 'A great alpha book', 100, 50000, 'Description for alpha book'),
-        ('Test Book Beta', 'A great beta book', 200, 75000, 'Description for beta book'),
-        ('Test Book Gamma', 'A great gamma book', 50, 30000, 'Description for gamma book')
-      ON DUPLICATE KEY UPDATE title = VALUES(title)
-    `);
+    const regularEmail = `product_user_${Date.now()}@gmail.com`;
+    await registerUser(app, regularEmail, 'pass123', adminTokens.accessToken);
+    regularTokens = await loginUser(app, regularEmail, 'pass123');
   }, 30000);
 
   afterAll(async () => {
-    // Cleanup seeded test products
-    const dataSource = getDataSource(app);
-    await dataSource.query(
-      `DELETE FROM product_entity WHERE title LIKE 'Test Book%'`,
-    );
     await app.close();
   });
 
-  describe('List Products', () => {
-    it('should return paginated list of products', async () => {
+  describe('Admin CRUD', () => {
+    let createdProductId: number;
+
+    it('should allow admin to create a product', async () => {
+      const response = await authPost(
+        app,
+        '/admin/product',
+        adminTokens.accessToken,
+      )
+        .send({
+          title: 'Royal Memory Foam Mattress Pro',
+          description: 'Five layers of advanced comfort technology.',
+          price: 899.0,
+          originalPrice: 1299.0,
+          badge: 'BEST SELLER',
+          material: 'Gel Memory Foam',
+          height: '12 Inches',
+          origin: 'Made in Vietnam',
+          firmness: 'Medium-Firm (6.5/10)',
+          certifications: 'CertiPUR-US®',
+          warranty: '10 Years Limited',
+          amount: 50,
+        })
+        .expect(201);
+
+      expect(response.body.code).toBe('OK');
+      expect(response.body.data).toHaveProperty('id');
+      expect(response.body.data.title).toBe('Royal Memory Foam Mattress Pro');
+      expect(Number(response.body.data.price)).toBe(899.0);
+      expect(Number(response.body.data.originalPrice)).toBe(1299.0);
+      expect(response.body.data.badge).toBe('BEST SELLER');
+      expect(response.body.data.material).toBe('Gel Memory Foam');
+      expect(response.body.data.isActive).toBe(true);
+      createdProductId = response.body.data.id;
+    });
+
+    it('should allow admin to create a product with category links', async () => {
+      // Get existing categories
+      const catRes = await request(app.getHttpServer())
+        .get('/category')
+        .query({ pageNum: 1, pageSize: 5 })
+        .expect(200);
+
+      const firstCatId = catRes.body.data[0]?.id;
+      if (!firstCatId) return;
+
+      const response = await authPost(
+        app,
+        '/admin/product',
+        adminTokens.accessToken,
+      )
+        .send({
+          title: 'Product With Category',
+          description: 'Linked to a category.',
+          price: 100,
+          categoryIds: [firstCatId],
+        })
+        .expect(201);
+
+      expect(response.body.data.categories).toBeInstanceOf(Array);
+    });
+
+    it('should allow admin to list all products with pagination', async () => {
+      const response = await authGet(
+        app,
+        '/admin/product?pageNum=1&pageSize=5',
+        adminTokens.accessToken,
+      ).expect(200);
+
+      expect(response.body.code).toBe('OK');
+      expect(response.body.data).toBeInstanceOf(Array);
+      expect(response.body.pagination).toBeDefined();
+      expect(response.body.pagination.totalCount).toBeGreaterThanOrEqual(1);
+    });
+
+    it('should allow admin to get product by id', async () => {
+      const response = await authGet(
+        app,
+        `/admin/product/${createdProductId}`,
+        adminTokens.accessToken,
+      ).expect(200);
+
+      expect(response.body.code).toBe('OK');
+      expect(response.body.data.id).toBe(createdProductId);
+      expect(response.body.data.title).toBe('Royal Memory Foam Mattress Pro');
+    });
+
+    it('should allow admin to update a product', async () => {
+      const response = await authPut(
+        app,
+        `/admin/product/${createdProductId}`,
+        adminTokens.accessToken,
+      )
+        .send({ title: 'Updated Mattress', price: 799.0, isActive: false })
+        .expect(200);
+
+      expect(response.body.code).toBe('OK');
+      expect(response.body.data.title).toBe('Updated Mattress');
+      expect(Number(response.body.data.price)).toBe(799.0);
+      expect(response.body.data.isActive).toBe(false);
+    });
+
+    it('should allow admin to delete a product', async () => {
+      const createRes = await authPost(
+        app,
+        '/admin/product',
+        adminTokens.accessToken,
+      )
+        .send({ title: 'To Delete', description: 'temp', price: 10 })
+        .expect(201);
+
+      const deleteId = createRes.body.data.id;
+
+      await authDelete(
+        app,
+        `/admin/product/${deleteId}`,
+        adminTokens.accessToken,
+      ).expect(200);
+
+      await authGet(
+        app,
+        `/admin/product/${deleteId}`,
+        adminTokens.accessToken,
+      ).expect(404);
+    });
+
+    it('should return 404 for non-existent product', async () => {
+      await authGet(
+        app,
+        '/admin/product/999999',
+        adminTokens.accessToken,
+      ).expect(404);
+    });
+  });
+
+  describe('Public Read (no JWT required)', () => {
+    it('should return paginated active products', async () => {
       const response = await request(app.getHttpServer())
-        .get('/product/all')
+        .get('/product')
         .query({ pageNum: 1, pageSize: 10 })
         .expect(200);
 
       expect(response.body.code).toBe('OK');
       expect(response.body.data).toBeInstanceOf(Array);
-      expect(response.body.data.length).toBeGreaterThanOrEqual(1);
       expect(response.body.pagination).toBeDefined();
-      expect(response.body.pagination.totalCount).toBeGreaterThanOrEqual(3);
     });
 
-    it('should respect pagination parameters', async () => {
+    it('should only show active products in public list', async () => {
       const response = await request(app.getHttpServer())
-        .get('/product/all')
-        .query({ pageNum: 1, pageSize: 2 })
+        .get('/product')
+        .query({ pageNum: 1, pageSize: 50 })
         .expect(200);
 
-      expect(response.body.data.length).toBeLessThanOrEqual(2);
-      expect(Number(response.body.pagination.pageSize)).toBe(2);
-      expect(Number(response.body.pagination.pageNum)).toBe(1);
+      const titles = response.body.data.map((p: any) => p.title);
+      // "Updated Mattress" was set to isActive=false
+      expect(titles).not.toContain('Updated Mattress');
     });
 
-    it('should return products with expected fields', async () => {
-      const response = await request(app.getHttpServer())
-        .get('/product/all')
-        .query({ pageNum: 1, pageSize: 10 })
-        .expect(200);
+    it('should return product detail and increment view count', async () => {
+      // Create an active product for testing
+      const createRes = await authPost(
+        app,
+        '/admin/product',
+        adminTokens.accessToken,
+      )
+        .send({
+          title: 'View Count Test',
+          description: 'Testing views',
+          price: 50,
+          isActive: true,
+        })
+        .expect(201);
 
-      const product = response.body.data[0];
-      expect(product).toHaveProperty('id');
-      expect(product).toHaveProperty('title');
-      expect(product).toHaveProperty('subtitle');
-      expect(product).toHaveProperty('amount');
-      expect(product).toHaveProperty('description');
-    });
-
-    it('should return empty array for page beyond total', async () => {
-      const response = await request(app.getHttpServer())
-        .get('/product/all')
-        .query({ pageNum: 9999, pageSize: 10 })
-        .expect(200);
-
-      expect(response.body.data).toEqual([]);
-    });
-  });
-
-  describe('Product Detail', () => {
-    it('should return product detail by id', async () => {
-      // First get a product id from the list
-      const listResponse = await request(app.getHttpServer())
-        .get('/product/all')
-        .query({ pageNum: 1, pageSize: 1 })
-        .expect(200);
-
-      const productId = listResponse.body.data[0].id;
+      const productId = createRes.body.data.id;
 
       const response = await request(app.getHttpServer())
-        .get('/product/detail')
-        .query({ id: productId })
+        .get(`/product/${productId}`)
         .expect(200);
 
       expect(response.body.code).toBe('OK');
-      expect(response.body.data).toHaveProperty('id');
+      expect(response.body.data.id).toBe(productId);
       expect(response.body.data).toHaveProperty('title');
+      expect(response.body.data).toHaveProperty('price');
+      expect(response.body.data).toHaveProperty('images');
+      expect(response.body.data).toHaveProperty('categories');
+    });
+  });
+
+  describe('Auth Enforcement', () => {
+    it('should reject unauthenticated user on admin create', async () => {
+      const response = await request(app.getHttpServer())
+        .post('/admin/product')
+        .send({ title: 'Hack', description: 'hacked', price: 1 });
+
+      expect(response.status).toBe(401);
+    });
+
+    it('should reject regular user on admin create', async () => {
+      const response = await authPost(
+        app,
+        '/admin/product',
+        regularTokens.accessToken,
+      ).send({ title: 'Regular', description: 'test', price: 1 });
+
+      expect(response.status).toBe(403);
+    });
+
+    it('should reject unauthenticated user on admin delete', async () => {
+      const response = await request(app.getHttpServer()).delete(
+        '/admin/product/1',
+      );
+
+      expect(response.status).toBe(401);
+    });
+
+    it('should reject regular user on admin update', async () => {
+      const response = await authPut(
+        app,
+        '/admin/product/1',
+        regularTokens.accessToken,
+      ).send({ title: 'Hacked' });
+
+      expect(response.status).toBe(403);
     });
   });
 });

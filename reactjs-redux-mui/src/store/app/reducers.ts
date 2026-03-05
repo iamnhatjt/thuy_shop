@@ -19,9 +19,13 @@ export interface AppState {
   userData?: UserInfo;
 }
 
+// Initialize with token from localStorage so ProtectedRoute works on first render
+const storedToken = clientStorage.get(ACCESS_TOKEN_STORAGE_KEY);
+
 const initialState: AppState = {
   appReady: false,
   isExpandedSlideBar: true,
+  token: storedToken || undefined,
 };
 
 const appSlice = createSlice({

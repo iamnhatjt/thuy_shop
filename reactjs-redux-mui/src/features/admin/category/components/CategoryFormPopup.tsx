@@ -10,6 +10,7 @@ import {
   Stack,
   Switch,
   TextField,
+  Typography,
 } from "@mui/material";
 import { useFormik } from "formik";
 import * as yup from "yup";
@@ -56,7 +57,6 @@ const CategoryFormPopup: React.FC = () => {
     },
   });
 
-  // Reset form when popup opens/closes or editing category changes
   useEffect(() => {
     if (isOpenFormPopup && editingCategory) {
       formik.setValues({
@@ -70,7 +70,6 @@ const CategoryFormPopup: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpenFormPopup, editingCategory]);
 
-  // Filter out current category (and its children) from parent options to prevent circular references
   const parentOptions = useMemo(() => {
     if (!allCategories) return [];
     return allCategories.filter(
@@ -85,13 +84,28 @@ const CategoryFormPopup: React.FC = () => {
   };
 
   return (
-    <Dialog open={isOpenFormPopup} maxWidth="sm" fullWidth onClose={handleClose}>
+    <Dialog
+      open={isOpenFormPopup}
+      maxWidth="sm"
+      fullWidth
+      onClose={handleClose}
+      PaperProps={{
+        sx: { borderRadius: "16px", p: 1 },
+      }}
+    >
       <form onSubmit={formik.handleSubmit}>
-        <DialogTitle align="center">
-          {isEditing ? "Edit Category" : "Add Category"}
+        <DialogTitle sx={{ fontWeight: 700, textAlign: "center", pb: 1 }}>
+          <Typography variant="h6" fontWeight={700}>
+            {isEditing ? "Edit Category" : "Add Category"}
+          </Typography>
+          <Typography variant="body2" color="#9ca3af" mt={0.5}>
+            {isEditing
+              ? "Update the category details below"
+              : "Fill in the details to create a new category"}
+          </Typography>
         </DialogTitle>
         <DialogContent>
-          <Stack spacing={2} sx={{ mt: 1 }}>
+          <Stack spacing={2.5} sx={{ mt: 1 }}>
             <TextField
               fullWidth
               label="Title"
@@ -101,6 +115,11 @@ const CategoryFormPopup: React.FC = () => {
               onBlur={formik.handleBlur}
               error={formik.touched.title && Boolean(formik.errors.title)}
               helperText={formik.touched.title && formik.errors.title}
+              sx={{
+                "& .MuiOutlinedInput-root": {
+                  borderRadius: "12px",
+                },
+              }}
             />
             <TextField
               fullWidth
@@ -109,6 +128,11 @@ const CategoryFormPopup: React.FC = () => {
               name="parentId"
               value={formik.values.parentId}
               onChange={formik.handleChange}
+              sx={{
+                "& .MuiOutlinedInput-root": {
+                  borderRadius: "12px",
+                },
+              }}
             >
               <MenuItem value="">
                 <em>None (Top-Level)</em>
@@ -127,23 +151,41 @@ const CategoryFormPopup: React.FC = () => {
                     formik.setFieldValue("isActive", e.target.checked)
                   }
                   name="isActive"
+                  color="primary"
                 />
               }
-              label="Active"
+              label={
+                <Typography fontWeight={500}>Active</Typography>
+              }
             />
           </Stack>
         </DialogContent>
-        <DialogActions>
-          <Button variant="text" onClick={handleClose}>
+        <DialogActions sx={{ px: 3, pb: 2.5 }}>
+          <Button
+            variant="outlined"
+            onClick={handleClose}
+            sx={{
+              borderRadius: "10px",
+              textTransform: "none",
+              fontWeight: 600,
+              px: 3,
+            }}
+          >
             Cancel
           </Button>
           <Button
-            size="large"
-            color="success"
             variant="contained"
             type="submit"
+            sx={{
+              borderRadius: "10px",
+              textTransform: "none",
+              fontWeight: 600,
+              px: 3,
+              bgcolor: "#135bec",
+              "&:hover": { bgcolor: "#0e44b3" },
+            }}
           >
-            {isEditing ? "Update" : "Add"}
+            {isEditing ? "Update" : "Create"}
           </Button>
         </DialogActions>
       </form>

@@ -4,26 +4,34 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import MainLayout from "./layouts/MainLayout";
-import Signin from "./features/client/Signin";
 import Home from "./features/client/home";
 import AdminLayout from "./layouts/AdminLayout";
+import ProtectedRoute from "./layouts/ProtectedRoute";
+import AdminLogin from "./features/admin/login/AdminLogin";
 import {
   ADMIN_BANNER_PATH,
   ADMIN_CATEGORY_PATH,
+  ADMIN_LOGIN_PATH,
   ADMIN_PATH,
   HOME_PATH,
   SIGNIN_PATH,
 } from "./constant/paths";
 import AdminBanner from "./features/admin/banner";
 import AdminCategory from "./features/admin/category";
+import Signin from "./features/client/Signin";
 
 const listRouterPaths: RouteObject[] = [
-  // with no wrapper
+  // Client signin
   {
     path: SIGNIN_PATH,
     element: <Signin />,
   },
-  //With wrapper
+  // Admin login (public)
+  {
+    path: ADMIN_LOGIN_PATH,
+    element: <AdminLogin />,
+  },
+  // Client layout
   {
     path: HOME_PATH,
     element: <MainLayout />,
@@ -34,18 +42,23 @@ const listRouterPaths: RouteObject[] = [
       },
     ],
   },
-  //With admin wrapper
+  // Admin layout (protected)
   {
     path: ADMIN_PATH,
-    element: <AdminLayout />,
+    element: <ProtectedRoute />,
     children: [
       {
-        path: ADMIN_BANNER_PATH,
-        element: <AdminBanner />,
-      },
-      {
-        path: ADMIN_CATEGORY_PATH,
-        element: <AdminCategory />,
+        element: <AdminLayout />,
+        children: [
+          {
+            path: ADMIN_BANNER_PATH,
+            element: <AdminBanner />,
+          },
+          {
+            path: ADMIN_CATEGORY_PATH,
+            element: <AdminCategory />,
+          },
+        ],
       },
     ],
   },

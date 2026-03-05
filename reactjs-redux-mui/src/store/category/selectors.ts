@@ -165,7 +165,8 @@ const DEFAULT_NAV_ITEMS: NavItem[] = [
 ];
 
 /**
- * Transforms flat category list from API into NavItem tree.
+ * Transforms category list from API into NavItem tree.
+ * API returns parent categories with nested children array.
  * Parent categories become top-level items, children become subtitle items.
  */
 const transformCategoriesToNavItems = (
@@ -173,24 +174,25 @@ const transformCategoriesToNavItems = (
 ): NavItem[] => {
   if (!categories || categories.length === 0) return [];
 
-  // Separate parents (no parentId) and children
-  const parents = categories.filter((c) => !c.parentId && c.isActive);
-  const children = categories.filter((c) => !!c.parentId && c.isActive);
-
-  return parents.map((parent) => {
-    const childItems = children.filter((c) => c.parentId === parent.id);
-    const navItem: NavItem = {
-      title: parent.title,
-      url: parent.url || `/${parent.id}`,
-    };
-    if (childItems.length > 0) {
-      navItem.subtitle = childItems.map((child) => ({
-        title: child.title,
-        url: child.url || `/${parent.id}/${child.id}`,
-      }));
-    }
-    return navItem;
-  });
+  // API returns parent categories with nested children
+  return categories
+    .filter((c) => !c.parentId && c.isActive)
+    .map((parent) => {
+      const navItem: NavItem = {
+        title: parent.title,
+        url: parent.url || `/${parent.id}`,
+      };
+      // Use the nested children array from the API response
+      if (parent.children && parent.children.length > 0) {
+        navItem.subtitle = parent.children
+          .filter((child) => child.isActive)
+          .map((child) => ({
+            title: child.title,
+            url: child.url || `/${parent.id}/${child.id}`,
+          }));
+      }
+      return navItem;
+    });
 };
 
 export const useNavbarCategories = () => {
@@ -204,7 +206,14 @@ export const useNavbarCategories = () => {
       return DEFAULT_NAV_ITEMS;
     }
     const transformed = transformCategoriesToNavItems(data.data);
-    return transformed.length > 0 ? transformed : DEFAULT_NAV_ITEMS;
+    // If API data has no children (no subtitles), use defaults which have full navigation
+    const hasAnySubtitles = transformed.some(
+      (item) => item.subtitle && item.subtitle.length > 0,
+    );
+    if (transformed.length === 0 || !hasAnySubtitles) {
+      return DEFAULT_NAV_ITEMS;
+    }
+    return transformed;
   }, [data, isError]);
 
   return { navItems, isLoading };
